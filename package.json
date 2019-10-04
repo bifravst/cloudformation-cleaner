@@ -1,0 +1,69 @@
+{
+  "name": "@bifravst/cloudformation-cleaner",
+  "version": "0.0.0-development",
+  "description": "Cleans old CloudFormation stacks, e.g. from CI runs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "check-node-version --package --print && npx tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bifravst/cloudformation-cleaner.git"
+  },
+  "keywords": [
+    "Cloud",
+    "bifravst",
+    "AWS",
+    "NordicSemiconductor"
+  ],
+  "author": "Nordic Semiconductor ASA | nordicsemi.no",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/bifravst/cloudformation-cleaner/issues"
+  },
+  "homepage": "https://github.com/bifravst/cloudformation-cleaner#readme",
+  "dependencies": {
+    "@aws-cdk/aws-events-targets": "^1.11.0",
+    "@aws-cdk/aws-iam": "^1.11.0",
+    "@aws-cdk/aws-lambda": "^1.11.0",
+    "@aws-cdk/aws-logs": "^1.11.0",
+    "@aws-cdk/core": "^1.11.0",
+    "cdk": "^1.11.0",
+    "check-node-version": "^4.0.1"
+  },
+  "devDependencies": {
+    "@bifravst/code-style": "^5.0.1",
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-angular": "^8.2.0",
+    "@types/aws-sdk": "^2.7.0",
+    "eslint": "^6.5.1",
+    "husky": "^3.0.8",
+    "prettier": "^1.18.2",
+    "typescript": "^3.7.0-beta"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -e",
+      "pre-commit": "lint-staged && npx tsc"
+    }
+  },
+  "lint-staged": {
+    "*.{md,json,yaml,yml}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "engines": {
+    "node": ">=12.0.0",
+    "npm": ">=6.0.0"
+  },
+  "release": {
+    "branch": "saga",
+    "remoteTags": true,
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/github"
+    ]
+  }
+}
