@@ -23,12 +23,12 @@
   },
   "homepage": "https://github.com/bifravst/cloudformation-cleaner#readme",
   "dependencies": {
-    "@aws-cdk/aws-events-targets": "^1.11.0",
-    "@aws-cdk/aws-iam": "^1.11.0",
-    "@aws-cdk/aws-lambda": "^1.11.0",
-    "@aws-cdk/aws-logs": "^1.11.0",
-    "@aws-cdk/core": "^1.11.0",
-    "cdk": "^1.11.0",
+    "@aws-cdk/aws-events-targets": "^1.16.3",
+    "@aws-cdk/aws-iam": "^1.16.3",
+    "@aws-cdk/aws-lambda": "^1.16.3",
+    "@aws-cdk/aws-logs": "^1.16.3",
+    "@aws-cdk/core": "^1.16.3",
+    "cdk": "^1.16.3",
     "check-node-version": "^4.0.1"
   },
   "devDependencies": {
@@ -36,10 +36,10 @@
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-angular": "^8.2.0",
     "@types/aws-sdk": "^2.7.0",
-    "eslint": "^6.5.1",
-    "husky": "^3.0.8",
-    "prettier": "^1.18.2",
-    "typescript": "^3.7.0-beta"
+    "eslint": "^6.6.0",
+    "husky": "^3.0.9",
+    "prettier": "^1.19.1",
+    "typescript": "^3.7.2"
   },
   "husky": {
     "hooks": {
