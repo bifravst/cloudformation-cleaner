@@ -29,17 +29,17 @@
     "@aws-cdk/aws-logs": "^1.18.0",
     "@aws-cdk/core": "^1.18.0",
     "cdk": "^1.18.0",
-    "check-node-version": "^4.0.1"
+    "check-node-version": "^4.0.2"
   },
   "devDependencies": {
-    "@bifravst/code-style": "^5.0.1",
+    "@bifravst/code-style": "^6.0.0",
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-angular": "^8.2.0",
     "@types/aws-sdk": "^2.7.0",
-    "eslint": "^6.7.1",
+    "eslint": "^6.7.2",
     "husky": "^3.1.0",
     "prettier": "^1.19.1",
-    "typescript": "^3.7.2"
+    "typescript": "^3.7.3"
   },
   "husky": {
     "hooks": {
@@ -50,6 +50,11 @@
   "lint-staged": {
     "*.{md,json,yaml,yml}": [
       "prettier --write",
+      "git add"
+    ],
+    "*.{ts,tsx}": [
+      "prettier --write",
+      "eslint --ext .js,.ts",
       "git add"
     ]
   },

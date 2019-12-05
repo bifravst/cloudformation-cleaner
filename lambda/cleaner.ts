@@ -18,14 +18,15 @@ export const handler = async () => {
 		.promise()
 
 	// Find stacks that match the given regex in the event and that are older than 24 hours
-	const stacksToDelete = StackSummaries?.filter(({ StackName }) =>
-		StackName.indexOf(STACK_NAME_PREFIX) === 0
-	)
-		.filter(
-			({ CreationTime }) =>
-				Date.now() - CreationTime.getTime() > 24 * 60 * 60 * 1000,
+	const stacksToDelete =
+		StackSummaries?.filter(({ StackName }) =>
+			StackName.startsWith(STACK_NAME_PREFIX),
 		)
-		.map(({ StackName }) => StackName) ?? []
+			.filter(
+				({ CreationTime }) =>
+					Date.now() - CreationTime.getTime() > 24 * 60 * 60 * 1000,
+			)
+			.map(({ StackName }) => StackName) ?? []
 
 	// Shuffle the array, this helps to delete stacks which have dependencies to other stacks.
 	// Eventually all stacks will be deleted in the right order
@@ -39,7 +40,7 @@ export const handler = async () => {
 
 	// Delete at most 10 stacks at once (again to compensate for dependencies)
 	return stacksToDelete.slice(0, 10).reduce(
-		(promise, StackName) =>
+		async (promise, StackName) =>
 			promise.then(async () => {
 				console.log(StackName)
 				await cf.deleteStack({ StackName }).promise()
