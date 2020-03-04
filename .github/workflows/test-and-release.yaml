@@ -32,5 +32,5 @@ jobs:
         if: success()
         continue-on-error: true
         run: |
-          npm i --no-save semantic-release@next
+          npm i --no-save semantic-release
           npx semantic-release
