@@ -23,9 +23,6 @@ jobs:
             ${{ runner.OS }}-build-${{ env.cache-name }}-
             ${{ runner.OS }}-build-
             ${{ runner.OS }}-
-      - name: Authenticate with NPM
-        run: |
-          echo "//npm.pkg.github.com/:_authToken=$GITHUB_TOKEN" > ~/.npmrc
       - name: Install dependencies and compile
         run: npm ci --no-audit
       - name: Semantic release
