@@ -32,7 +32,7 @@
     "check-node-version": "^4.0.3"
   },
   "devDependencies": {
-    "@bifravst/code-style": "^6.0.2",
+    "@bifravst/code-style": "^7.1.0",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-angular": "^8.3.4",
     "@types/aws-sdk": "^2.7.0",
