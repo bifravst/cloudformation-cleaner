@@ -25,6 +25,7 @@ which deletes stacks that have a certain prefix and are older than 24 hours.
 > stack can be deleted, because this lambda has the permissions to delete
 > everything.
 
-    # you can configure the prefix with this environment variable:
-    export STACK_PREFIX=your-ci-stack-prefix-
     npx cdk deploy
+
+You can configure the regular expression used to check against a stack name with
+the environment `STACK_NAME_REGEX` variable of the lambda, e.g. `^bifravst-`.

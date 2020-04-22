@@ -2,7 +2,9 @@ import { CloudFormation } from 'aws-sdk'
 
 const cf = new CloudFormation()
 
-const STACK_NAME_PREFIX = process.env?.STACK_NAME_PREFIX ?? 'bifravst-'
+const STACK_NAME_REGEX = process.env.STACK_NAME_REGEX
+	? new RegExp(process.env.STACK_NAME_REGEX)
+	: /^bifravst-/
 
 export const handler = async () => {
 	const { StackSummaries } = await cf
@@ -19,9 +21,7 @@ export const handler = async () => {
 
 	// Find stacks that match the given regex in the event and that are older than 24 hours
 	const stacksToDelete =
-		StackSummaries?.filter(({ StackName }) =>
-			StackName.startsWith(STACK_NAME_PREFIX),
-		)
+		StackSummaries?.filter(({ StackName }) => STACK_NAME_REGEX.test(StackName))
 			.filter(
 				({ CreationTime }) =>
 					Date.now() - CreationTime.getTime() > 24 * 60 * 60 * 1000,
