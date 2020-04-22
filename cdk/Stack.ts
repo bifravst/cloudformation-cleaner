@@ -24,7 +24,7 @@ export class Stack extends CloudFormation.Stack {
 			),
 			description: 'Cleans old CloudFormation stacks',
 			handler: 'index.handler',
-			runtime: Lambda.Runtime.NODEJS_8_10,
+			runtime: Lambda.Runtime.NODEJS_12_X,
 			timeout: CloudFormation.Duration.seconds(60),
 			initialPolicy: [
 				new IAM.PolicyStatement({
