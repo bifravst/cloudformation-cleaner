@@ -28,6 +28,12 @@ export const handler = async () => {
 			)
 			.map(({ StackName }) => StackName) ?? []
 
+	// Log ignored stacks
+	const ignoredStacks = StackSummaries?.filter(
+		({ StackName }) => !stacksToDelete.includes(StackName),
+	).map(({ StackName }) => StackName)
+	console.log(JSON.stringify({ ignoredStacks }))
+
 	// Shuffle the array, this helps to delete stacks which have dependencies to other stacks.
 	// Eventually all stacks will be deleted in the right order
 	for (let i = stacksToDelete.length - 1; i > 0; i--) {
