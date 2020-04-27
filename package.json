@@ -23,12 +23,12 @@
   },
   "homepage": "https://github.com/bifravst/cloudformation-cleaner#readme",
   "dependencies": {
-    "@aws-cdk/aws-events-targets": "^1.34.1",
-    "@aws-cdk/aws-iam": "^1.34.1",
-    "@aws-cdk/aws-lambda": "^1.34.1",
-    "@aws-cdk/aws-logs": "^1.34.1",
-    "@aws-cdk/core": "^1.34.1",
-    "cdk": "^1.34.1",
+    "@aws-cdk/aws-events-targets": "^1.35.0",
+    "@aws-cdk/aws-iam": "^1.35.0",
+    "@aws-cdk/aws-lambda": "^1.35.0",
+    "@aws-cdk/aws-logs": "^1.35.0",
+    "@aws-cdk/core": "^1.35.0",
+    "cdk": "^1.35.0",
     "check-node-version": "^4.0.3"
   },
   "devDependencies": {
