@@ -32,7 +32,7 @@
     "@aws-cdk/core": "^1.36.1",
     "cdk": "^1.36.1",
     "check-node-version": "^4.0.3",
-    "snyk": "^1.316.2"
+    "snyk": "^1.317.0"
   },
   "devDependencies": {
     "@bifravst/code-style": "^7.1.4",
