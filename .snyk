@@ -1,6 +1,11 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
 version: v1.14.1
-ignore: {}
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  SNYK-JS-AJV-584908:
+    - cdk > aws-cdk > @aws-cdk/cloudformation-diff > table > ajv:
+        reason: Build time dependency
+        expires: '2020-09-02T12:30:53.517Z'
 # patches apply the minimum changes required to fix a vulnerability
 patch:
   SNYK-JS-LODASH-567746:
