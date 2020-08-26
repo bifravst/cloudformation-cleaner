@@ -35,7 +35,7 @@
     "snyk": "1.369.3"
   },
   "devDependencies": {
-    "@bifravst/code-style": "8.0.20",
+    "@bifravst/code-style": "8.0.38",
     "@commitlint/cli": "9.1.2",
     "@commitlint/config-angular": "9.1.2",
     "@types/aws-sdk": "2.7.0",
