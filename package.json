@@ -30,7 +30,7 @@
     "@aws-cdk/aws-lambda": "1.64.0",
     "@aws-cdk/aws-logs": "1.64.0",
     "@aws-cdk/core": "1.64.0",
-    "cdk": "1.63.0",
+    "cdk": "1.64.0",
     "check-node-version": "4.0.3",
     "snyk": "1.400.0"
   },
