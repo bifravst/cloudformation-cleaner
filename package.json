@@ -35,7 +35,7 @@
     "snyk": "1.408.0"
   },
   "devDependencies": {
-    "@bifravst/code-style": "8.0.113",
+    "@bifravst/code-style": "8.0.115",
     "@commitlint/cli": "11.0.0",
     "@commitlint/config-angular": "11.0.0",
     "@types/node": "14.11.2",
