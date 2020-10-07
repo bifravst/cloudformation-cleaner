@@ -3,14 +3,14 @@ import { Stack } from './Stack'
 
 export class App extends CloudFormation.App {
 	public constructor({
-		stackId,
+		stackName,
 		stackNamePrefix,
 	}: {
-		stackId: string
+		stackName: string
 		stackNamePrefix: string
 	}) {
 		super()
 
-		new Stack(this, stackId, { stackNamePrefix })
+		new Stack(this, stackName, { stackNamePrefix })
 	}
 }
