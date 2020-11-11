@@ -21,6 +21,8 @@ jobs:
           key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies and compile
         run: npm ci --no-audit
+      - name: Compile
+        run: npx tsc
       - name: Semantic release
         if: success()
         continue-on-error: true
