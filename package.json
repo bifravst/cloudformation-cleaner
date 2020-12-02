@@ -4,7 +4,6 @@
   "description": "Cleans old CloudFormation stacks, e.g. from CI runs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "check-node-version --package",
     "snyk-protect": "snyk protect",
     "prepare": "npm run snyk-protect"
   },
@@ -32,7 +31,6 @@
     "@aws-cdk/aws-logs": "1.76.0",
     "@aws-cdk/core": "1.76.0",
     "cdk": "1.76.0",
-    "check-node-version": "4.0.3",
     "snyk": "1.433.0"
   },
   "devDependencies": {
