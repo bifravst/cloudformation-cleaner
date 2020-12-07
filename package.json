@@ -31,17 +31,17 @@
     "@aws-cdk/aws-logs": "1.76.0",
     "@aws-cdk/core": "1.76.0",
     "cdk": "1.76.0",
-    "snyk": "1.433.0"
+    "snyk": "1.434.2"
   },
   "devDependencies": {
     "@bifravst/code-style": "8.0.134",
     "@commitlint/cli": "11.0.0",
     "@commitlint/config-angular": "11.0.0",
     "@types/node": "14.14.10",
-    "aws-sdk": "2.802.0",
-    "eslint": "7.14.0",
-    "husky": "4.3.0",
-    "lint-staged": "10.5.2",
+    "aws-sdk": "2.804.0",
+    "eslint": "7.15.0",
+    "husky": "4.3.5",
+    "lint-staged": "10.5.3",
     "prettier": "2.2.1",
     "typescript": "4.1.2"
   },
