@@ -38,7 +38,7 @@
     "@commitlint/cli": "11.0.0",
     "@commitlint/config-angular": "11.0.0",
     "@types/node": "14.14.11",
-    "aws-sdk": "2.806.0",
+    "aws-sdk": "2.807.0",
     "eslint": "7.15.0",
     "husky": "4.3.5",
     "lint-staged": "10.5.3",
