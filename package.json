@@ -31,7 +31,7 @@
     "@aws-cdk/aws-logs": "1.77.0",
     "@aws-cdk/core": "1.77.0",
     "cdk": "1.77.0",
-    "snyk": "1.434.4"
+    "snyk": "1.435.0"
   },
   "devDependencies": {
     "@bifravst/code-style": "8.0.134",
