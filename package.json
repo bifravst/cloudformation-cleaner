@@ -4,7 +4,7 @@
   "description": "Cleans old CloudFormation stacks, e.g. from CI runs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "snyk-protect": "snyk protect",
+    "snyk-protect": "snyk protect --prune-repeated-subdependencies",
     "prepare": "npm run snyk-protect"
   },
   "repository": {
