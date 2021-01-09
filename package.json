@@ -31,7 +31,7 @@
     "@aws-cdk/aws-logs": "1.83.0",
     "@aws-cdk/core": "1.83.0",
     "@aws-sdk/client-cloudformation": "3.2.0",
-    "@aws-sdk/client-s3": "3.1.0",
+    "@aws-sdk/client-s3": "3.2.0",
     "@bifravst/code-style": "8.0.134",
     "@bifravst/eslint-config-typescript": "5.0.86",
     "@commitlint/cli": "11.0.0",
