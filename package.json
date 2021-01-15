@@ -36,7 +36,7 @@
     "@bifravst/eslint-config-typescript": "5.0.87",
     "@commitlint/cli": "11.0.0",
     "@commitlint/config-angular": "11.0.0",
-    "@types/node": "14.14.20",
+    "@types/node": "14.14.21",
     "cdk": "1.85.0",
     "eslint": "7.17.0",
     "husky": "4.3.7",
