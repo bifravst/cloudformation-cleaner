@@ -1,3 +1,6 @@
+> **:truck: moved to https://github.com/NordicSemiconductor/cloud-aws-cloudformation-cleaner-js**  
+> :information_source: [more info](https://github.com/bifravst/bifravst/issues/56)
+
 # AWS CloudFormation Cleaner
 
 [![GitHub Actions](https://github.com/bifravst/cloudformation-cleaner/workflows/Test%20and%20Release/badge.svg)](https://github.com/bifravst/cloudformation-cleaner/actions)
