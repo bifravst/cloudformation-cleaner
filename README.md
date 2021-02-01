@@ -31,4 +31,5 @@ which deletes stacks that have a certain prefix and are older than 24 hours.
     npx cdk deploy
 
 You can configure the regular expression used to check against a stack name with
-the environment `STACK_NAME_REGEX` variable of the lambda, e.g. `^bifravst-`.
+the environment `STACK_NAME_REGEX` variable of the lambda, e.g.
+`^asset-tracker-`.

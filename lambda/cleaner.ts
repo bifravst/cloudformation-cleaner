@@ -17,7 +17,7 @@ const s3 = new S3Client({})
 const STACK_NAME_REGEX =
 	process.env.STACK_NAME_REGEX !== undefined
 		? new RegExp(process.env.STACK_NAME_REGEX)
-		: /^bifravst-/
+		: /^asset-tracker-/
 
 export const handler = async (): Promise<void> => {
 	const { StackSummaries } = await cf.send(
