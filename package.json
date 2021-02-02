@@ -34,7 +34,7 @@
     "@commitlint/cli": "11.0.0",
     "@commitlint/config-angular": "11.0.0",
     "@nordicsemiconductor/asset-tracker-cloud-code-style": "9.0.0",
-    "@nordicsemiconductor/asset-tracker-cloud-eslint-config-typescript": "6.0.0",
+    "@nordicsemiconductor/eslint-config-asset-tracker-cloud-typescript": "^7.0.0",
     "@types/node": "14.14.22",
     "cdk": "1.87.1",
     "eslint": "7.19.0",
@@ -74,5 +74,6 @@
       "@semantic-release/github"
     ]
   },
-  "snyk": true
+  "snyk": true,
+  "dependencies": {}
 }
