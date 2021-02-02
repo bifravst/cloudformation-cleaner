@@ -21,6 +21,7 @@ which deletes stacks that have a certain prefix and are older than 24 hours.
 
     git clone https://github.com/NordicSemiconductor/cloud-aws-cloudformation-cleaner-js
     npm ci
+    npx tsc
 
 ## Setup in your CI account
 
