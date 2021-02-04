@@ -24,7 +24,10 @@ export class Stack extends CloudFormation.Stack {
 			),
 			description: 'Cleans old CloudFormation stacks',
 			handler: 'index.handler',
-			runtime: Lambda.Runtime.NODEJS_12_X, // NODEJS_14_X does not support inline functions, yet. See https://github.com/aws/aws-cdk/pull/12861#discussion_r570038002,
+			// runtime: Lambda.Runtime.NODEJS_14_X, // FIXME: use once CDK has support
+			runtime: new Lambda.Runtime('nodejs14.x', Lambda.RuntimeFamily.NODEJS, {
+				supportsInlineCode: true,
+			}),
 			timeout: CloudFormation.Duration.seconds(60),
 			initialPolicy: [
 				new IAM.PolicyStatement({
