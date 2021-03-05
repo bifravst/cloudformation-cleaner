@@ -46,7 +46,7 @@
     "pinst": "2.1.6",
     "prettier": "2.2.1",
     "snyk": "1.471.0",
-    "typescript": "4.2.2"
+    "typescript": "4.2.3"
   },
   "lint-staged": {
     "*.{md,json,yaml,yml}": [
