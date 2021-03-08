@@ -75,7 +75,8 @@ export const handler = async (): Promise<void> => {
 					s3buckets?.map(async (Bucket) => {
 						console.log(`Deleting S3 Bucket: ${Bucket}`)
 						// Delete Items
-						s3.send(new ListObjectsCommand({ Bucket }))
+						await s3
+							.send(new ListObjectsCommand({ Bucket }))
 							.then(async ({ Contents }) => {
 								if (Contents)
 									await s3.send(
