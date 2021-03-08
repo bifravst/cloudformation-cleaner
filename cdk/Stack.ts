@@ -1,64 +1,42 @@
 import * as CloudFormation from '@aws-cdk/core'
 import * as Lambda from '@aws-cdk/aws-lambda'
-import * as IAM from '@aws-cdk/aws-iam'
-import * as CloudWatchLogs from '@aws-cdk/aws-logs'
-import * as Events from '@aws-cdk/aws-events'
-import * as EventsTargets from '@aws-cdk/aws-events-targets'
-import * as path from 'path'
-import * as fs from 'fs'
+import { CleanerLambda } from './CleanerLambda'
 
 export class Stack extends CloudFormation.Stack {
 	public constructor(
 		parent: CloudFormation.App,
 		id: string,
-		{ stackNamePrefix }: { stackNamePrefix: string },
+		{ layerZipFileLocation }: { layerZipFileLocation: string },
 	) {
 		super(parent, id)
 
-		const lambda = new Lambda.Function(this, 'lambda', {
-			code: Lambda.Code.fromInline(
-				fs.readFileSync(
-					path.join(process.cwd(), 'dist', 'lambda', 'cleaner.js'),
-					'utf-8',
-				),
-			),
-			description: 'Cleans old CloudFormation stacks',
-			handler: 'index.handler',
-			runtime: Lambda.Runtime.NODEJS_12_X, // NODEJS_14_X does not support inline functions, yet. See https://github.com/aws/aws-cdk/pull/12861#discussion_r570038002,
-			timeout: CloudFormation.Duration.seconds(60),
-			initialPolicy: [
-				new IAM.PolicyStatement({
-					resources: ['*'],
-					actions: ['*'],
-				}),
-			],
-			environment: {
-				STACK_NAME_PREFIX: stackNamePrefix,
-			},
+		const layer = new Lambda.LayerVersion(this, 'layer', {
+			compatibleRuntimes: [Lambda.Runtime.NODEJS_12_X],
+			code: Lambda.Code.fromAsset(layerZipFileLocation),
 		})
 
-		new CloudWatchLogs.LogGroup(this, 'LogGroup', {
-			removalPolicy: CloudFormation.RemovalPolicy.DESTROY,
-			logGroupName: `/aws/lambda/${lambda.functionName}`,
-			retention: CloudWatchLogs.RetentionDays.ONE_WEEK,
+		const stackCleanerLambda = new CleanerLambda(
+			this,
+			'stackCleanerLambda',
+			'stack-cleaner',
+			[layer],
+		)
+
+		new CloudFormation.CfnOutput(this, 'stackCleanerLambdaName', {
+			value: stackCleanerLambda.lambda.functionName,
+			exportName: `${this.stackName}:stackCleanerLambdaName`,
 		})
 
-		const rule = new Events.Rule(this, 'invokeMessageCounterRule', {
-			schedule: Events.Schedule.expression('rate(1 hour)'),
-			description:
-				'Invoke the lambda which cleans up old CloudFormation stacks',
-			enabled: true,
-			targets: [new EventsTargets.LambdaFunction(lambda)],
-		})
+		const logGroupsCleanerLambda = new CleanerLambda(
+			this,
+			'logGroupCleanerLambda',
+			'log-group-cleaner',
+			[layer],
+		)
 
-		lambda.addPermission('InvokeByEvents', {
-			principal: new IAM.ServicePrincipal('events.amazonaws.com'),
-			sourceArn: rule.ruleArn,
-		})
-
-		new CloudFormation.CfnOutput(this, 'lambdaName', {
-			value: lambda.functionName,
-			exportName: `${this.stackName}:lambdaName`,
+		new CloudFormation.CfnOutput(this, 'logGroupsCleanerLambdaName', {
+			value: logGroupsCleanerLambda.lambda.functionName,
+			exportName: `${this.stackName}:logGroupsCleanerLambdaName`,
 		})
 	}
 }

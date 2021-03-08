@@ -10,12 +10,13 @@
 [![ESLint: TypeScript](https://img.shields.io/badge/ESLint-TypeScript-blue.svg)](https://github.com/typescript-eslint/typescript-eslint)
 
 This is a [CDK](https://github.com/aws/aws-cdk) project written in TypeScript
-that sets up a CloudFormation stack which cleans up left-over stacks from CI
-runs.
+that sets up a CloudFormation stack which cleans up left-over stacks and log
+groups from CI runs.
 
 Although your CI tests _should_ clean up after themselves, there still might be
-stacks that get not cleaned up perfectly. This stack runs a lambda every hour,
-which deletes stacks that have a certain prefix and are older than 24 hours.
+stacks and log groups that get not cleaned up perfectly. This stack runs a
+lambda every hour, which deletes stacks and log groups that have a certain
+prefix and are older than 24 hours.
 
 ## Install
 
@@ -31,6 +32,15 @@ which deletes stacks that have a certain prefix and are older than 24 hours.
 
     npx cdk deploy
 
-You can configure the regular expression used to check against a stack name with
-the environment `STACK_NAME_REGEX` variable of the lambda, e.g.
-`^asset-tracker-`.
+### Configuration
+
+You can configure the regular expression used to check against a stack or log
+group name with the environment variable `STACK_NAME_REGEX` of the
+`stack-cleaner` lambda, e.g. `^asset-tracker-`. For the `log-group-cleaner`
+lambda, the environment variable is called `LOG_GROUP_NAME_REGEX`.
+
+You can optionally configure the environment variable `AGE_IN_HOURS` to set the
+minimum age in hours after which a resource is deleted. The default is `24`.
+
+The `LOGFILE_LIMIT` environment variable configures the number of log groups to
+delete in one run. The default is `100`.

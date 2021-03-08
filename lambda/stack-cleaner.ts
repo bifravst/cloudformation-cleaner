@@ -1,6 +1,7 @@
 import {
 	DeleteBucketCommand,
 	DeleteObjectsCommand,
+	ListBucketsCommand,
 	ListObjectsCommand,
 	S3Client,
 } from '@aws-sdk/client-s3'
@@ -14,12 +15,15 @@ import {
 const cf = new CloudFormationClient({})
 const s3 = new S3Client({})
 
+const AGE_IN_HOURS = parseInt(process.env.AGE_IN_HOURS ?? '24', 10)
+
 const STACK_NAME_REGEX =
 	process.env.STACK_NAME_REGEX !== undefined
 		? new RegExp(process.env.STACK_NAME_REGEX)
 		: /^asset-tracker-/
 
 export const handler = async (): Promise<void> => {
+	// Find stacks in state to be deleted
 	const { StackSummaries } = await cf.send(
 		new ListStacksCommand({
 			StackStatusFilter: [
@@ -40,7 +44,7 @@ export const handler = async (): Promise<void> => {
 			.filter(
 				({ CreationTime }) =>
 					Date.now() - (CreationTime?.getTime() ?? Date.now()) >
-					24 * 60 * 60 * 1000,
+					AGE_IN_HOURS * 60 * 60 * 100,
 			)
 			.map(({ StackName }) => StackName) ?? []
 
@@ -73,31 +77,40 @@ export const handler = async (): Promise<void> => {
 				).map(({ PhysicalResourceId }) => PhysicalResourceId as string)
 				await Promise.all(
 					s3buckets?.map(async (Bucket) => {
-						console.log(`Deleting S3 Bucket: ${Bucket}`)
-						// Delete Items
-						await s3
-							.send(new ListObjectsCommand({ Bucket }))
-							.then(async ({ Contents }) => {
-								if (Contents)
-									await s3.send(
-										new DeleteObjectsCommand({
-											Bucket,
-											Delete: {
-												Objects: Contents.map(({ Key }) => ({
-													Key: Key as string,
-												})),
-											},
-										}),
-									)
+						try {
+							await s3.send(
+								new ListBucketsCommand({
+									Bucket,
+								}),
+							)
+							console.log(`Deleting S3 Bucket: ${Bucket}`)
+							// Delete Items
+							await s3
+								.send(new ListObjectsCommand({ Bucket }))
+								.then(async ({ Contents }) => {
+									if (Contents)
+										await s3.send(
+											new DeleteObjectsCommand({
+												Bucket,
+												Delete: {
+													Objects: Contents.map(({ Key }) => ({
+														Key: Key as string,
+													})),
+												},
+											}),
+										)
 
-								// Delete Bucket
-								return s3.send(new DeleteBucketCommand({ Bucket }))
-							})
-							.catch((err) => {
-								console.debug(
-									`Failed to delete bucket ${Bucket}: ${err.message}`,
-								)
-							})
+									// Delete Bucket
+									return s3.send(new DeleteBucketCommand({ Bucket }))
+								})
+								.catch((err) => {
+									console.debug(
+										`Failed to delete bucket ${Bucket}: ${err.message}`,
+									)
+								})
+						} catch (err) {
+							console.log(`Bucket ${Bucket} does not`)
+						}
 					}) ?? [],
 				)
 

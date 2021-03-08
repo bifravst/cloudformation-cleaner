@@ -4,13 +4,13 @@ import { Stack } from './Stack'
 export class App extends CloudFormation.App {
 	public constructor({
 		stackName,
-		stackNamePrefix,
+		layerZipFileLocation,
 	}: {
 		stackName: string
-		stackNamePrefix: string
+		layerZipFileLocation: string
 	}) {
 		super()
 
-		new Stack(this, stackName, { stackNamePrefix })
+		new Stack(this, stackName, { layerZipFileLocation })
 	}
 }
