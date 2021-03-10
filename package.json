@@ -46,7 +46,7 @@
     "lint-staged": "10.5.4",
     "pinst": "2.1.6",
     "prettier": "2.2.1",
-    "snyk": "1.482.0",
+    "snyk": "1.483.0",
     "typescript": "4.2.3",
     "yazl": "2.5.1"
   },
