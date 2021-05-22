@@ -38,7 +38,7 @@
     "@types/node": "14.17.0",
     "@types/yazl": "2.4.2",
     "cdk": "1.105.0",
-    "eslint": "7.26.0",
+    "eslint": "7.27.0",
     "glob": "7.1.7",
     "husky": "6.0.0",
     "lint-staged": "11.0.0",
