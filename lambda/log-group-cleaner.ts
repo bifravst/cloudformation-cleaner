@@ -72,7 +72,9 @@ export const handler = async (): Promise<void> => {
 					)
 				} catch (err) {
 					console.debug(
-						`Failed to delete log group ${logGroupName}: ${err.message}`,
+						`Failed to delete log group ${logGroupName}: ${
+							(err as Error).message
+						}`,
 					)
 				}
 			}),
