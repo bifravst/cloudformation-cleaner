@@ -1,16 +1,17 @@
-import * as CloudFormation from '@aws-cdk/core'
-import * as Lambda from '@aws-cdk/aws-lambda'
-import * as IAM from '@aws-cdk/aws-iam'
-import * as CloudWatchLogs from '@aws-cdk/aws-logs'
-import * as Events from '@aws-cdk/aws-events'
-import * as EventsTargets from '@aws-cdk/aws-events-targets'
+import { Construct } from 'constructs'
+import { Duration, RemovalPolicy } from 'aws-cdk-lib'
+import { aws_lambda as Lambda } from 'aws-cdk-lib'
+import { aws_iam as IAM } from 'aws-cdk-lib'
+import { aws_logs as CloudWatchLogs } from 'aws-cdk-lib'
+import { aws_events as Events } from 'aws-cdk-lib'
+import { aws_events_targets as EventsTargets } from 'aws-cdk-lib'
 import * as path from 'path'
 import * as fs from 'fs'
 
-export class CleanerLambda extends CloudFormation.Construct {
+export class CleanerLambda extends Construct {
 	public readonly lambda: Lambda.IFunction
 	public constructor(
-		parent: CloudFormation.Construct,
+		parent: Construct,
 		id: string,
 		source: 'stack-cleaner' | 'log-group-cleaner',
 		layers: Lambda.ILayerVersion[],
@@ -27,7 +28,7 @@ export class CleanerLambda extends CloudFormation.Construct {
 			description: `Cleans old CloudFormation resources (${source})`,
 			handler: 'index.handler',
 			runtime: Lambda.Runtime.NODEJS_12_X, // NODEJS_14_X does not support inline functions, yet. See https://github.com/aws/aws-cdk/pull/12861#discussion_r570038002,
-			timeout: CloudFormation.Duration.seconds(60),
+			timeout: Duration.seconds(60),
 			initialPolicy: [
 				new IAM.PolicyStatement({
 					resources: ['*'],
@@ -38,7 +39,7 @@ export class CleanerLambda extends CloudFormation.Construct {
 		})
 
 		new CloudWatchLogs.LogGroup(this, 'LogGroup', {
-			removalPolicy: CloudFormation.RemovalPolicy.DESTROY,
+			removalPolicy: RemovalPolicy.DESTROY,
 			logGroupName: `/aws/lambda/${this.lambda.functionName}`,
 			retention: CloudWatchLogs.RetentionDays.ONE_WEEK,
 		})

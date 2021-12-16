@@ -1,4 +1,4 @@
-import * as CloudFormation from '@aws-cdk/core'
+import * as CloudFormation from 'aws-cdk-lib'
 import { Stack } from './Stack'
 
 export class App extends CloudFormation.App {

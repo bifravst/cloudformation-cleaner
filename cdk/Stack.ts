@@ -1,5 +1,5 @@
-import * as CloudFormation from '@aws-cdk/core'
-import * as Lambda from '@aws-cdk/aws-lambda'
+import * as CloudFormation from 'aws-cdk-lib'
+import { aws_lambda as Lambda } from 'aws-cdk-lib'
 import { CleanerLambda } from './CleanerLambda'
 
 export class Stack extends CloudFormation.Stack {
