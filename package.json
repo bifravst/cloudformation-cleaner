@@ -13,9 +13,8 @@
     "url": "git+https://github.com/NordicSemiconductor/cloud-aws-cloudformation-cleaner-js.git"
   },
   "keywords": [
-    "Cloud",
-    "AWS",
-    "Nordic Semiconductor"
+    "aws",
+    "cloudformation"
   ],
   "author": "Nordic Semiconductor ASA | nordicsemi.no",
   "license": "BSD-3-Clause",
