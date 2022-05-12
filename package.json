@@ -30,7 +30,7 @@
     "aws-cdk-lib": "2.24.0",
     "cdk": "2.24.0",
     "constructs": "10.1.7",
-    "glob": "8.0.1",
+    "glob": "8.0.2",
     "yazl": "2.5.1"
   },
   "lint-staged": {
