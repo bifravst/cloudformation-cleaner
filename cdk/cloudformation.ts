@@ -1,10 +1,10 @@
-import { App } from './App'
+import * as childProcess from 'child_process'
 import * as fs from 'fs'
 import { promises as fsAsync } from 'fs'
-import * as path from 'path'
-import * as childProcess from 'child_process'
-import * as yazl from 'yazl'
 import * as glob from 'glob'
+import * as path from 'path'
+import * as yazl from 'yazl'
+import { App } from './App'
 
 const STACK_NAME = process.env.STACK_NAME ?? 'cloudformation-cleaner'
 const layerDir = path.resolve(process.cwd(), 'dist', 'layer')
