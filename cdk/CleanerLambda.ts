@@ -1,12 +1,15 @@
+import {
+	aws_events as Events,
+	aws_events_targets as EventsTargets,
+	aws_iam as IAM,
+	aws_lambda as Lambda,
+	aws_logs as CloudWatchLogs,
+	Duration,
+	RemovalPolicy,
+} from 'aws-cdk-lib'
 import { Construct } from 'constructs'
-import { Duration, RemovalPolicy } from 'aws-cdk-lib'
-import { aws_lambda as Lambda } from 'aws-cdk-lib'
-import { aws_iam as IAM } from 'aws-cdk-lib'
-import { aws_logs as CloudWatchLogs } from 'aws-cdk-lib'
-import { aws_events as Events } from 'aws-cdk-lib'
-import { aws_events_targets as EventsTargets } from 'aws-cdk-lib'
-import * as path from 'path'
 import * as fs from 'fs'
+import * as path from 'path'
 
 export class CleanerLambda extends Construct {
 	public readonly lambda: Lambda.IFunction
