@@ -25,7 +25,7 @@
   "devDependencies": {
     "@nordicsemiconductor/asset-tracker-cloud-code-style": "11.0.94",
     "@types/glob": "7.2.0",
-    "@types/node": "16.11.42",
+    "@types/node": "18.0.0",
     "@types/yazl": "2.4.2",
     "aws-cdk-lib": "2.29.1",
     "cdk": "2.29.1",
@@ -58,8 +58,8 @@
     ]
   },
   "dependencies": {
-    "@aws-sdk/client-cloudformation": "3.118.1",
-    "@aws-sdk/client-cloudwatch-logs": "3.118.1",
-    "@aws-sdk/client-s3": "3.120.0"
+    "@aws-sdk/client-cloudformation": "3.121.0",
+    "@aws-sdk/client-cloudwatch-logs": "3.121.0",
+    "@aws-sdk/client-s3": "3.121.0"
   }
 }
