@@ -58,8 +58,8 @@
     ]
   },
   "dependencies": {
-    "@aws-sdk/client-cloudformation": "3.130.0",
-    "@aws-sdk/client-cloudwatch-logs": "3.130.0",
-    "@aws-sdk/client-s3": "3.130.0"
+    "@aws-sdk/client-cloudformation": "3.131.0",
+    "@aws-sdk/client-cloudwatch-logs": "3.131.0",
+    "@aws-sdk/client-s3": "3.131.0"
   }
 }
