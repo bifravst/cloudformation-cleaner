@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/NordicSemiconductor/cloud-aws-cloudformation-cleaner-js#readme",
   "devDependencies": {
-    "@nordicsemiconductor/asset-tracker-cloud-code-style": "11.0.120",
+    "@nordicsemiconductor/asset-tracker-cloud-code-style": "11.0.121",
     "@types/glob": "8.0.0",
     "@types/node": "18.0.0",
     "@types/yazl": "2.4.2",
