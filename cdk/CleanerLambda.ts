@@ -16,7 +16,7 @@ export class CleanerLambda extends Construct {
 	public constructor(
 		parent: Construct,
 		id: string,
-		source: 'stack-cleaner' | 'log-group-cleaner',
+		source: 'stack-cleaner' | 'log-group-cleaner' | 'role-cleaner',
 		layers: Lambda.ILayerVersion[],
 	) {
 		super(parent, id)
@@ -49,8 +49,7 @@ export class CleanerLambda extends Construct {
 
 		const rule = new Events.Rule(this, 'invokeMessageCounterRule', {
 			schedule: Events.Schedule.expression('rate(1 hour)'),
-			description:
-				'Invoke the lambda which cleans up old CloudFormation resources',
+			description: `Invoke the ${source} which cleans up old CloudFormation resources`,
 			enabled: true,
 			targets: [new EventsTargets.LambdaFunction(this.lambda)],
 		})
