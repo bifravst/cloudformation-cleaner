@@ -15,7 +15,7 @@ export class CleanerLambda extends Construct {
 	public constructor(
 		parent: Construct,
 		id: string,
-		source: 'stack-cleaner' | 'log-group-cleaner',
+		source: 'stack-cleaner' | 'log-group-cleaner' | 'role-cleaner',
 		layers: Lambda.ILayerVersion[],
 	) {
 		super(parent, id)
