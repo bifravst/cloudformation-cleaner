@@ -50,5 +50,17 @@ export class Stack extends CloudFormation.Stack {
 			value: roleCleanerLambda.lambda.functionName,
 			exportName: `${this.stackName}:roleCleanerLambdaName`,
 		})
+
+		const s3CleanerLambda = new CleanerLambda(
+			this,
+			's3CleanerLambda',
+			's3-cleaner',
+			[layer],
+		)
+
+		new CloudFormation.CfnOutput(this, 's3CleanerLambdaName', {
+			value: s3CleanerLambda.lambda.functionName,
+			exportName: `${this.stackName}:s3CleanerLambdaName`,
+		})
 	}
 }

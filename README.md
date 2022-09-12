@@ -37,7 +37,8 @@ You can configure the regular expression used to check against a stack or log
 group name with the environment variable `STACK_NAME_REGEX` of the
 `stack-cleaner` lambda, e.g. `^asset-tracker-`. For the `log-group-cleaner`
 lambda, the environment variable is called `LOG_GROUP_NAME_REGEX`. For the
-`role-cleaner` lambda, the environment variable is called `ROLE_NAME_REGEX`.
+`role-cleaner` lambda, the environment variable is called `ROLE_NAME_REGEX`. For
+the `s3-cleaner` lambda, the environment variable is called `BUCKET_NAME_REGEX`.
 
 You can optionally configure the environment variable `AGE_IN_HOURS` to set the
 minimum age in hours after which a resource is deleted. The default is `24`.

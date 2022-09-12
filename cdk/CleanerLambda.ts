@@ -8,7 +8,6 @@ import {
 	RemovalPolicy,
 } from 'aws-cdk-lib'
 import { Construct } from 'constructs'
-import * as fs from 'fs'
 import * as path from 'path'
 
 export class CleanerLambda extends Construct {
@@ -16,20 +15,19 @@ export class CleanerLambda extends Construct {
 	public constructor(
 		parent: Construct,
 		id: string,
-		source: 'stack-cleaner' | 'log-group-cleaner' | 'role-cleaner',
+		source:
+			| 'stack-cleaner'
+			| 'log-group-cleaner'
+			| 'role-cleaner'
+			| 's3-cleaner',
 		layers: Lambda.ILayerVersion[],
 	) {
 		super(parent, id)
 
 		this.lambda = new Lambda.Function(this, 'lambda', {
-			code: Lambda.Code.fromInline(
-				fs.readFileSync(
-					path.join(process.cwd(), 'dist', 'lambda', `${source}.js`),
-					'utf-8',
-				),
-			),
+			code: Lambda.Code.fromAsset(path.join(process.cwd(), 'dist', 'lambda')),
 			description: `Cleans old CloudFormation resources (${source})`,
-			handler: 'index.handler',
+			handler: `${source}.handler`,
 			runtime: Lambda.Runtime.NODEJS_12_X, // NODEJS_14_X does not support inline functions, yet. See https://github.com/aws/aws-cdk/pull/12861#discussion_r570038002,
 			timeout: Duration.seconds(60),
 			initialPolicy: [

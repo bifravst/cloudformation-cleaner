@@ -4,13 +4,8 @@ import {
 	DescribeStackResourcesCommand,
 	ListStacksCommand,
 } from '@aws-sdk/client-cloudformation'
-import {
-	DeleteBucketCommand,
-	DeleteObjectsCommand,
-	ListBucketsCommand,
-	ListObjectsCommand,
-	S3Client,
-} from '@aws-sdk/client-s3'
+import { S3Client } from '@aws-sdk/client-s3'
+import { deleteS3Bucket } from './deleteS3Bucket'
 
 const cf = new CloudFormationClient({})
 const s3 = new S3Client({})
@@ -75,44 +70,7 @@ export const handler = async (): Promise<void> => {
 				const s3buckets = resources?.StackResources?.filter(
 					(res) => res.ResourceType === 'AWS::S3::Bucket',
 				).map(({ PhysicalResourceId }) => PhysicalResourceId as string)
-				await Promise.all(
-					s3buckets?.map(async (Bucket) => {
-						try {
-							await s3.send(
-								new ListBucketsCommand({
-									Bucket,
-								}),
-							)
-							console.log(`Deleting S3 Bucket: ${Bucket}`)
-							// Delete Items
-							await s3
-								.send(new ListObjectsCommand({ Bucket }))
-								.then(async ({ Contents }) => {
-									if (Contents)
-										await s3.send(
-											new DeleteObjectsCommand({
-												Bucket,
-												Delete: {
-													Objects: Contents.map(({ Key }) => ({
-														Key: Key as string,
-													})),
-												},
-											}),
-										)
-
-									// Delete Bucket
-									return s3.send(new DeleteBucketCommand({ Bucket }))
-								})
-								.catch((err) => {
-									console.debug(
-										`Failed to delete bucket ${Bucket}: ${err.message}`,
-									)
-								})
-						} catch (err) {
-							console.log(`Bucket ${Bucket} does not`)
-						}
-					}) ?? [],
-				)
+				await Promise.all(s3buckets?.map(deleteS3Bucket(s3)) ?? [])
 
 				// Delete the Stack itself
 				console.log(`Deleting: ${StackName}`)
