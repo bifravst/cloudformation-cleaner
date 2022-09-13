@@ -17,8 +17,14 @@ const STACK_NAME_REGEX =
 		? new RegExp(process.env.STACK_NAME_REGEX)
 		: /^asset-tracker-/
 
-export const handler = async (): Promise<void> => {
-	// Find stacks in state to be deleted
+/**
+ * Recursively find stacks to delete
+ */
+const findStacksToDelete = async (
+	limit = 100,
+	stacksToDelete: string[] = [],
+): Promise<string[]> => {
+	if (stacksToDelete.length >= limit) return stacksToDelete
 	const { StackSummaries } = await cf.send(
 		new ListStacksCommand({
 			StackStatusFilter: [
@@ -30,24 +36,30 @@ export const handler = async (): Promise<void> => {
 			],
 		}),
 	)
-
-	// Find stacks that match the given regex in the event and that are older than 24 hours
-	const stacksToDelete =
-		StackSummaries?.filter(({ StackName }) =>
-			STACK_NAME_REGEX.test(StackName ?? ''),
+	if (StackSummaries !== undefined) {
+		const foundStacksToDelete: string[] = StackSummaries.filter(
+			({ StackName }) => STACK_NAME_REGEX.test(StackName ?? ''),
 		)
 			.filter(
 				({ CreationTime }) =>
 					Date.now() - (CreationTime?.getTime() ?? Date.now()) >
 					AGE_IN_HOURS * 60 * 60 * 100,
 			)
-			.map(({ StackName }) => StackName) ?? []
+			.map(({ StackName }) => StackName as string)
 
-	// Log ignored stacks
-	const ignoredStacks = StackSummaries?.filter(
-		({ StackName }) => !stacksToDelete.includes(StackName),
-	).map(({ StackName }) => StackName)
-	ignoredStacks?.forEach((name) => console.log(`Ignored: ${name}`))
+		// Log ignored log groups
+		const ignoredStacks = StackSummaries?.filter(
+			({ StackName }) => !foundStacksToDelete.includes(StackName ?? ''),
+		).map(({ StackName }) => StackName)
+		ignoredStacks?.forEach((name) => console.log(`Ignored: ${name}`))
+		stacksToDelete.push(...foundStacksToDelete)
+	}
+	return stacksToDelete
+}
+
+export const handler = async (): Promise<void> => {
+	// Find stacks in state to be deleted
+	const stacksToDelete = await findStacksToDelete()
 
 	// Shuffle the array, this helps to delete stacks which have dependencies to other stacks.
 	// Eventually all stacks will be deleted in the right order
@@ -69,7 +81,9 @@ export const handler = async (): Promise<void> => {
 				)
 				const s3buckets = resources?.StackResources?.filter(
 					(res) => res.ResourceType === 'AWS::S3::Bucket',
-				).map(({ PhysicalResourceId }) => PhysicalResourceId as string)
+				)
+					.map(({ PhysicalResourceId }) => PhysicalResourceId as string)
+					.filter((PhysicalResourceId) => PhysicalResourceId !== undefined)
 				await Promise.all(s3buckets?.map(deleteS3Bucket(s3)) ?? [])
 
 				// Delete the Stack itself
