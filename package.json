@@ -59,6 +59,6 @@
     "@aws-sdk/client-cloudformation": "3.193.0",
     "@aws-sdk/client-cloudwatch-logs": "3.193.0",
     "@aws-sdk/client-iam": "3.193.0",
-    "@aws-sdk/client-s3": "3.192.0"
+    "@aws-sdk/client-s3": "3.193.0"
   }
 }
