@@ -27,7 +27,7 @@
     "@types/yazl": "2.4.2",
     "aws-cdk-lib": "2.47.0",
     "cdk": "2.47.0",
-    "constructs": "10.1.136",
+    "constructs": "10.1.137",
     "glob": "8.0.3",
     "yazl": "2.5.1"
   },
