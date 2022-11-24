@@ -8,7 +8,8 @@ import {
 import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm'
 import { fromEnv } from '@nordicsemiconductor/from-env'
 
-const AGE_IN_HOURS = parseInt(process.env.AGE_IN_HOURS ?? '24', 10)
+// TODO: make SSM parameter
+const ageInHours = 24
 
 const iam = new IAMClient({})
 const ssm = new SSMClient({})
@@ -28,7 +29,7 @@ const roleNameNameRegExpPromise = (async () => {
 })()
 
 /**
- * Recursively find roles to delete
+ * find roles to delete
  */
 const findRolesToDelete = async (
 	limit = 100,
@@ -52,11 +53,11 @@ const findRolesToDelete = async (
 			.filter(
 				({ CreateDate }) =>
 					Date.now() - (CreateDate?.getTime() ?? Date.now()) >
-					AGE_IN_HOURS * 60 * 60 * 100,
+					ageInHours * 60 * 60 * 100,
 			)
 			.map(({ RoleName }) => RoleName as string)
 
-		// Log ignored log groups
+		//  log groups
 		const ignoredRoles = Roles?.filter(
 			({ RoleName }) => !foundRolesToDelete.includes(RoleName ?? ''),
 		).map(({ RoleName }) => RoleName)

@@ -32,18 +32,12 @@ prefix and are older than 24 hours.
 
 ### Configuration
 
-You can configure the regular expression used to check against a stack or log
-group name with the SSM parameter `/${stackName}/stackNameRegEx` of the
-`stack-cleaner` lambda, e.g. `^asset-tracker-`. For the `log-group-cleaner`
-lambda, the SSM parameter is called `/${stackName}/logGroupNameRegEx`. For the
-`role-cleaner` lambda, the SSM parameter is called
-`/${stackName}/roleNameRegEx`.
+You can configure the regular expression used to check against a resources names
+according to the following table
 
-> **Note**  
-> When redeploying the stack, the environment variables will be overwritten.
-
-You can optionally configure the environment variable `AGE_IN_HOURS` to set the
-minimum age in hours after which a resource is deleted. The default is `24`.
-
-The `LOGFILE_LIMIT` environment variable configures the number of log groups to
-delete in one run. The default is `100`.
+| Lambda              | SSM Parameter Name                |
+| ------------------- | --------------------------------- |
+| `stack-cleaner`     | `/${stackName}/stackNameRegEx`    |
+| `log-group-cleaner` | `/${stackName}/logGroupNameRegEx` |
+| `role-cleaner`      | `/${stackName}/roleNameRegEx`     |
+| `buckets-cleaner`   | `/${stackName}/bucketNameRegEx`   |

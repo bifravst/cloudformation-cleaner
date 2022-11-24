@@ -9,7 +9,8 @@ import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm'
 import { fromEnv } from '@nordicsemiconductor/from-env'
 import { deleteS3Bucket } from './deleteS3Bucket.js'
 
-const AGE_IN_HOURS = parseInt(process.env.AGE_IN_HOURS ?? '24', 10)
+// TODO: make SSM parameter
+const ageInHours = 24
 
 const cf = new CloudFormationClient({})
 const s3 = new S3Client({})
@@ -30,7 +31,7 @@ const stackNameRegexpPromise = (async () => {
 })()
 
 /**
- * Recursively find stacks to delete
+ * find stacks to delete
  */
 const findStacksToDelete = async (
 	limit = 100,
@@ -59,11 +60,11 @@ const findStacksToDelete = async (
 			.filter(
 				({ CreationTime }) =>
 					Date.now() - (CreationTime?.getTime() ?? Date.now()) >
-					AGE_IN_HOURS * 60 * 60 * 100,
+					ageInHours * 60 * 60 * 100,
 			)
 			.map(({ StackName }) => StackName as string)
 
-		// Log ignored log groups
+		//  log groups
 		const ignoredStacks = StackSummaries?.filter(
 			({ StackName }) => !foundStacksToDelete.includes(StackName ?? ''),
 		).map(({ StackName }) => StackName)
@@ -74,7 +75,6 @@ const findStacksToDelete = async (
 }
 
 export const handler = async (): Promise<void> => {
-	// Find stacks in state to be deleted
 	const stacksToDelete = await findStacksToDelete()
 
 	// Shuffle the array, this helps to delete stacks which have dependencies to other stacks.

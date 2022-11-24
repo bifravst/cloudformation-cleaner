@@ -6,7 +6,8 @@ import {
 } from '@aws-sdk/client-ssm'
 import { fromEnv } from '@nordicsemiconductor/from-env'
 
-const AGE_IN_HOURS = parseInt(process.env.AGE_IN_HOURS ?? '24', 10)
+// TODO: make SSM parameter
+const ageInHours = 24
 
 const ssm = new SSMClient({})
 
@@ -25,7 +26,7 @@ const parameterNameRegexpPromise = (async () => {
 })()
 
 /**
- * Recursively find parameters to delete
+ * find parameters to delete
  */
 const findParametersToDelete = async (
 	limit = 100,
@@ -50,11 +51,11 @@ const findParametersToDelete = async (
 			.filter(
 				({ LastModifiedDate }) =>
 					Date.now() - (LastModifiedDate?.getTime() ?? Date.now()) >
-					AGE_IN_HOURS * 60 * 60 * 100,
+					ageInHours * 60 * 60 * 100,
 			)
 			.map(({ Name }) => Name as string)
 
-		// Log ignored log groups
+		//  log groups
 		const ignoredParameters = Parameters?.filter(
 			({ Name }) => !foundParametersToDelete.includes(Name ?? ''),
 		).map(({ Name }) => Name)
@@ -68,7 +69,6 @@ const findParametersToDelete = async (
 }
 
 export const handler = async (): Promise<void> => {
-	// Find parameters in state to be deleted
 	const parametersToDelete = await findParametersToDelete()
 
 	const chunkSize = 10

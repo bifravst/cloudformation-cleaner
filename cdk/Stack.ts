@@ -21,19 +21,8 @@ export class Stack extends CloudFormation.Stack {
 			parameterName: stackNameRegExParamName,
 		})
 
-		const stackCleanerLambda = new CleanerLambda(
-			this,
-			'stackCleanerLambda',
-			'stack-cleaner',
-			[layer],
-			{
-				STACK_NAME_REGEX_PARAMETER_NAME: stackNameRegExParamName,
-			},
-		)
-
-		new CloudFormation.CfnOutput(this, 'stackCleanerLambdaName', {
-			value: stackCleanerLambda.lambda.functionName,
-			exportName: `${this.stackName}:stackCleanerLambdaName`,
+		new CleanerLambda(this, 'stackCleanerLambda', 'stack-cleaner', [layer], {
+			STACK_NAME_REGEX_PARAMETER_NAME: stackNameRegExParamName,
 		})
 
 		const logGroupNameRegExParamName = `/${id}/logGroupNameRegEx`
@@ -42,7 +31,7 @@ export class Stack extends CloudFormation.Stack {
 			parameterName: logGroupNameRegExParamName,
 		})
 
-		const logGroupsCleanerLambda = new CleanerLambda(
+		new CleanerLambda(
 			this,
 			'logGroupCleanerLambda',
 			'log-group-cleaner',
@@ -52,30 +41,14 @@ export class Stack extends CloudFormation.Stack {
 			},
 		)
 
-		new CloudFormation.CfnOutput(this, 'logGroupsCleanerLambdaName', {
-			value: logGroupsCleanerLambda.lambda.functionName,
-			exportName: `${this.stackName}:logGroupsCleanerLambdaName`,
-		})
-
 		const roleNameRegExParamName = `/${id}/roleNameRegEx`
 		new SSM.StringParameter(this, 'roleNameRegExParam', {
 			stringValue: 'asset-tracker-',
 			parameterName: roleNameRegExParamName,
 		})
 
-		const roleCleanerLambda = new CleanerLambda(
-			this,
-			'roleCleanerLambda',
-			'role-cleaner',
-			[layer],
-			{
-				ROLE_NAME_REGEX_PARAMETER_NAME: roleNameRegExParamName,
-			},
-		)
-
-		new CloudFormation.CfnOutput(this, 'roleCleanerLambdaName', {
-			value: roleCleanerLambda.lambda.functionName,
-			exportName: `${this.stackName}:roleCleanerLambdaName`,
+		new CleanerLambda(this, 'roleCleanerLambda', 'role-cleaner', [layer], {
+			ROLE_NAME_REGEX_PARAMETER_NAME: roleNameRegExParamName,
 		})
 
 		const parameterNameRegExpParamName = `/${id}/parameterNameRegExp`
@@ -84,7 +57,7 @@ export class Stack extends CloudFormation.Stack {
 			parameterName: parameterNameRegExpParamName,
 		})
 
-		const parameterCleanerLambda = new CleanerLambda(
+		new CleanerLambda(
 			this,
 			'parameterCleanerLambda',
 			'parameter-cleaner',
@@ -94,9 +67,14 @@ export class Stack extends CloudFormation.Stack {
 			},
 		)
 
-		new CloudFormation.CfnOutput(this, 'parameterCleanerLambdaName', {
-			value: parameterCleanerLambda.lambda.functionName,
-			exportName: `${this.stackName}:parameterCleanerLambdaName`,
+		const bucketNameRegExpParamName = `/${id}/bucketNameRegExp`
+		new SSM.StringParameter(this, 'bucketNameRegExpParam', {
+			stringValue: 'asset-tracker-',
+			parameterName: bucketNameRegExpParamName,
+		})
+
+		new CleanerLambda(this, 'bucketCleanerLambda', 'bucket-cleaner', [layer], {
+			BUCKET_NAME_REGEX_PARAMETER_NAME: bucketNameRegExpParamName,
 		})
 	}
 }

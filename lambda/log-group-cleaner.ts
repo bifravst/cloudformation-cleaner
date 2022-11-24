@@ -6,8 +6,8 @@ import {
 import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm'
 import { fromEnv } from '@nordicsemiconductor/from-env'
 
-const AGE_IN_HOURS = parseInt(process.env.AGE_IN_HOURS ?? '24', 10)
-const LOGFILE_LIMIT = parseInt(process.env.LOGFILE_LIMIT ?? '100', 10)
+// TODO: make SSM parameter
+const ageInHours = 24
 
 const logs = new CloudWatchLogsClient({})
 const ssm = new SSMClient({})
@@ -27,7 +27,7 @@ const logGroupNameRegExpPromise = (async () => {
 })()
 
 /**
- * Recursively find log groups to delete
+ * find log groups to delete
  */
 const findLogGroupsToDelete = async (
 	limit = 100,
@@ -50,11 +50,11 @@ const findLogGroupsToDelete = async (
 			.filter(
 				({ creationTime }) =>
 					Date.now() - (creationTime ?? Date.now()) >
-					AGE_IN_HOURS * 60 * 60 * 100,
+					ageInHours * 60 * 60 * 100,
 			)
 			.map(({ logGroupName }) => logGroupName as string)
 
-		// Log ignored log groups
+		//  log groups
 		const ignoredLogGroups = logGroups
 			?.filter(
 				({ logGroupName }) =>
@@ -71,7 +71,7 @@ const findLogGroupsToDelete = async (
 
 export const handler = async (): Promise<void> => {
 	// Find old log groups to delete
-	const logGroupsToDelete = await findLogGroupsToDelete(LOGFILE_LIMIT)
+	const logGroupsToDelete = await findLogGroupsToDelete()
 	await logGroupsToDelete.reduce(
 		async (promise, logGroupName) =>
 			promise.then(async () => {
