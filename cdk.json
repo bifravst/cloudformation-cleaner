@@ -1,3 +1,3 @@
 {
-  "app": "node dist/cdk/cloudformation.js"
+  "app": "npx swc lambda -d dist/lambda && npx tsx cdk/cloudformation.ts"
 }

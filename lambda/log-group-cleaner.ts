@@ -3,17 +3,28 @@ import {
 	DeleteLogGroupCommand,
 	DescribeLogGroupsCommand,
 } from '@aws-sdk/client-cloudwatch-logs'
-
-const logs = new CloudWatchLogsClient({})
+import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm'
+import { fromEnv } from '@nordicsemiconductor/from-env'
 
 const AGE_IN_HOURS = parseInt(process.env.AGE_IN_HOURS ?? '24', 10)
-
-const LOG_GROUP_NAME_REGEX =
-	process.env.LOG_GROUP_NAME_REGEX !== undefined
-		? new RegExp(process.env.LOG_GROUP_NAME_REGEX)
-		: /asset-tracker-/
-
 const LOGFILE_LIMIT = parseInt(process.env.LOGFILE_LIMIT ?? '100', 10)
+
+const logs = new CloudWatchLogsClient({})
+const ssm = new SSMClient({})
+
+const { logGroupNameRegExpParamName } = fromEnv({
+	logGroupNameRegExpParamName: 'LOG_GROUP_NAME_REGEX_PARAMETER_NAME',
+})(process.env)
+
+const logGroupNameRegExpPromise = (async () => {
+	const res = await ssm.send(
+		new GetParameterCommand({
+			Name: logGroupNameRegExpParamName,
+		}),
+	)
+
+	return new RegExp(res.Parameter?.Value ?? /^asset-tracker-/)
+})()
 
 /**
  * Recursively find log groups to delete
@@ -30,11 +41,12 @@ const findLogGroupsToDelete = async (
 			nextToken: startToken,
 		}),
 	)
+
+	const logGroupNameRegExp = await logGroupNameRegExpPromise
+
 	if (logGroups !== undefined) {
 		const foundLogGroupsToDelete: string[] = logGroups
-			.filter(({ logGroupName }) =>
-				LOG_GROUP_NAME_REGEX.test(logGroupName ?? ''),
-			)
+			.filter(({ logGroupName }) => logGroupNameRegExp.test(logGroupName ?? ''))
 			.filter(
 				({ creationTime }) =>
 					Date.now() - (creationTime ?? Date.now()) >

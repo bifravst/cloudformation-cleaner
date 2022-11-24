@@ -5,15 +5,27 @@ import {
 	ListAttachedRolePoliciesCommand,
 	ListRolesCommand,
 } from '@aws-sdk/client-iam'
+import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm'
+import { fromEnv } from '@nordicsemiconductor/from-env'
 
 const AGE_IN_HOURS = parseInt(process.env.AGE_IN_HOURS ?? '24', 10)
 
-const ROLE_NAME_REGEX =
-	process.env.ROLE_NAME_REGEX !== undefined
-		? new RegExp(process.env.ROLE_NAME_REGEX)
-		: /^asset-tracker-/
-
 const iam = new IAMClient({})
+const ssm = new SSMClient({})
+
+const { roleNameNameRegExpParamName } = fromEnv({
+	roleNameNameRegExpParamName: 'ROLE_NAME_REGEX_PARAMETER_NAME',
+})(process.env)
+
+const roleNameNameRegExpPromise = (async () => {
+	const res = await ssm.send(
+		new GetParameterCommand({
+			Name: roleNameNameRegExpParamName,
+		}),
+	)
+
+	return new RegExp(res.Parameter?.Value ?? /^asset-tracker-/)
+})()
 
 /**
  * Recursively find roles to delete
@@ -30,9 +42,12 @@ const findRolesToDelete = async (
 			Marker: startToken,
 		}),
 	)
+
+	const roleNameRegExp = await roleNameNameRegExpPromise
+
 	if (Roles !== undefined) {
 		const foundRolesToDelete: string[] = Roles.filter(({ RoleName }) =>
-			ROLE_NAME_REGEX.test(RoleName ?? ''),
+			roleNameRegExp.test(RoleName ?? ''),
 		)
 			.filter(
 				({ CreateDate }) =>

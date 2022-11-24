@@ -6,6 +6,7 @@ import {
 	aws_logs as CloudWatchLogs,
 	Duration,
 	RemovalPolicy,
+	Stack,
 } from 'aws-cdk-lib'
 import { Construct } from 'constructs'
 import * as path from 'path'
@@ -13,10 +14,11 @@ import * as path from 'path'
 export class CleanerLambda extends Construct {
 	public readonly lambda: Lambda.IFunction
 	public constructor(
-		parent: Construct,
+		parent: Stack,
 		id: string,
-		source: 'stack-cleaner' | 'log-group-cleaner' | 'role-cleaner',
+		source: string,
 		layers: Lambda.ILayerVersion[],
+		environment: Record<string, string>,
 	) {
 		super(parent, id)
 
@@ -24,15 +26,22 @@ export class CleanerLambda extends Construct {
 			code: Lambda.Code.fromAsset(path.join(process.cwd(), 'dist', 'lambda')),
 			description: `Cleans old CloudFormation resources (${source})`,
 			handler: `${source}.handler`,
-			runtime: Lambda.Runtime.NODEJS_12_X, // NODEJS_14_X does not support inline functions, yet. See https://github.com/aws/aws-cdk/pull/12861#discussion_r570038002,
+			runtime: Lambda.Runtime.NODEJS_18_X,
 			timeout: Duration.seconds(60),
 			initialPolicy: [
 				new IAM.PolicyStatement({
 					resources: ['*'],
 					actions: ['*'],
 				}),
+				new IAM.PolicyStatement({
+					actions: ['ssm:GetParametersByPath', 'ssm:GetParameter'],
+					resources: [
+						`arn:aws:ssm:${parent.region}:${parent.account}:parameter/${parent.stackName}/*`,
+					],
+				}),
 			],
 			layers,
+			environment,
 		})
 
 		new CloudWatchLogs.LogGroup(this, 'LogGroup', {

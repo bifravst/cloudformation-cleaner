@@ -21,7 +21,6 @@ prefix and are older than 24 hours.
 
     git clone https://github.com/NordicSemiconductor/cloud-aws-cloudformation-cleaner-js
     npm ci
-    npx tsc
 
 ## Setup in your CI account
 
@@ -34,10 +33,11 @@ prefix and are older than 24 hours.
 ### Configuration
 
 You can configure the regular expression used to check against a stack or log
-group name with the environment variable `STACK_NAME_REGEX` of the
+group name with the SSM parameter `/${stackName}/stackNameRegEx` of the
 `stack-cleaner` lambda, e.g. `^asset-tracker-`. For the `log-group-cleaner`
-lambda, the environment variable is called `LOG_GROUP_NAME_REGEX`. For the
-`role-cleaner` lambda, the environment variable is called `ROLE_NAME_REGEX`.
+lambda, the SSM parameter is called `/${stackName}/logGroupNameRegEx`. For the
+`role-cleaner` lambda, the SSM parameter is called
+`/${stackName}/roleNameRegEx`.
 
 > **Note**  
 > When redeploying the stack, the environment variables will be overwritten.

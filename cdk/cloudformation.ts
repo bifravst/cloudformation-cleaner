@@ -1,16 +1,23 @@
 import * as childProcess from 'child_process'
 import * as fs from 'fs'
 import { promises as fsAsync } from 'fs'
+import { writeFile } from 'fs/promises'
 import * as glob from 'glob'
 import * as path from 'path'
 import * as yazl from 'yazl'
 import { App } from './App'
 
 const STACK_NAME = process.env.STACK_NAME ?? 'cloudformation-cleaner'
+const lambdaDir = path.resolve(process.cwd(), 'dist', 'lambda')
 const layerDir = path.resolve(process.cwd(), 'dist', 'layer')
 const layerZipFileLocation = path.resolve(process.cwd(), 'dist', 'layer.zip')
 
 const main = async () => {
+	await writeFile(
+		path.join(lambdaDir, 'package.json'),
+		JSON.stringify({ type: 'module' }),
+		'utf-8',
+	)
 	try {
 		await fsAsync.mkdir(layerDir, { recursive: true })
 	} catch {
@@ -33,7 +40,7 @@ const main = async () => {
 			[
 				'ci',
 				'--ignore-scripts',
-				'--only=prod',
+				'--omit=dev',
 				'--no-audit',
 				'--legacy-peer-deps',
 			],

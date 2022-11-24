@@ -5,17 +5,29 @@ import {
 	ListStacksCommand,
 } from '@aws-sdk/client-cloudformation'
 import { S3Client } from '@aws-sdk/client-s3'
-import { deleteS3Bucket } from './deleteS3Bucket'
-
-const cf = new CloudFormationClient({})
-const s3 = new S3Client({})
+import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm'
+import { fromEnv } from '@nordicsemiconductor/from-env'
+import { deleteS3Bucket } from './deleteS3Bucket.js'
 
 const AGE_IN_HOURS = parseInt(process.env.AGE_IN_HOURS ?? '24', 10)
 
-const STACK_NAME_REGEX =
-	process.env.STACK_NAME_REGEX !== undefined
-		? new RegExp(process.env.STACK_NAME_REGEX)
-		: /^asset-tracker-/
+const cf = new CloudFormationClient({})
+const s3 = new S3Client({})
+const ssm = new SSMClient({})
+
+const { stackNameRegexpParamName } = fromEnv({
+	stackNameRegexpParamName: 'STACK_NAME_REGEX_PARAMETER_NAME',
+})(process.env)
+
+const stackNameRegexpPromise = (async () => {
+	const res = await ssm.send(
+		new GetParameterCommand({
+			Name: stackNameRegexpParamName,
+		}),
+	)
+
+	return new RegExp(res.Parameter?.Value ?? /^asset-tracker-/)
+})()
 
 /**
  * Recursively find stacks to delete
@@ -36,9 +48,12 @@ const findStacksToDelete = async (
 			],
 		}),
 	)
+
+	const stackNameRegexp = await stackNameRegexpPromise
+
 	if (StackSummaries !== undefined) {
 		const foundStacksToDelete: string[] = StackSummaries.filter(
-			({ StackName }) => STACK_NAME_REGEX.test(StackName ?? ''),
+			({ StackName }) => stackNameRegexp.test(StackName ?? ''),
 		)
 			.filter(
 				({ CreationTime }) =>
