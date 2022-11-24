@@ -75,6 +75,7 @@ export const handler = async (): Promise<void> => {
 	await logGroupsToDelete.reduce(
 		async (promise, logGroupName) =>
 			promise.then(async () => {
+				const waitPromise = new Promise((resolve) => setTimeout(resolve, 500))
 				try {
 					console.log(`Deleting log group: ${logGroupName}`)
 					await logs.send(
@@ -89,6 +90,7 @@ export const handler = async (): Promise<void> => {
 						}`,
 					)
 				}
+				await waitPromise
 			}),
 		Promise.resolve(),
 	)

@@ -27,7 +27,7 @@ export class CleanerLambda extends Construct {
 			description: `Cleans old CloudFormation resources (${source})`,
 			handler: `${source}.handler`,
 			runtime: Lambda.Runtime.NODEJS_18_X,
-			timeout: Duration.seconds(60),
+			timeout: Duration.minutes(5),
 			initialPolicy: [
 				new IAM.PolicyStatement({
 					resources: ['*'],

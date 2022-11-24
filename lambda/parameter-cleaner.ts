@@ -29,7 +29,7 @@ const parameterNameRegexpPromise = (async () => {
  * find parameters to delete
  */
 const findParametersToDelete = async (
-	limit = 100,
+	limit = 1000,
 	parametersToDelete: string[] = [],
 	startToken?: string,
 ): Promise<string[]> => {
@@ -73,6 +73,7 @@ export const handler = async (): Promise<void> => {
 
 	const chunkSize = 10
 	for (let i = 0; i < parametersToDelete.length; i += chunkSize) {
+		const waitPromise = new Promise((resolve) => setTimeout(resolve, 500))
 		const chunk = parametersToDelete.slice(i, i + chunkSize)
 		console.log(`Deleting: ${chunk}`)
 		await ssm.send(
@@ -80,5 +81,6 @@ export const handler = async (): Promise<void> => {
 				Names: chunk,
 			}),
 		)
+		await waitPromise
 	}
 }
