@@ -45,6 +45,7 @@ const findStacksToDelete = async (
 				'ROLLBACK_FAILED',
 				'ROLLBACK_COMPLETE',
 				'DELETE_FAILED',
+				'REVIEW_IN_PROGRESS',
 			],
 		}),
 	)
