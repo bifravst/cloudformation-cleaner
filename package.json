@@ -59,11 +59,11 @@
     ]
   },
   "dependencies": {
-    "@aws-sdk/client-cloudformation": "3.231.0",
-    "@aws-sdk/client-cloudwatch-logs": "3.231.0",
-    "@aws-sdk/client-iam": "3.231.0",
-    "@aws-sdk/client-s3": "3.231.0",
-    "@aws-sdk/client-ssm": "3.231.0",
+    "@aws-sdk/client-cloudformation": "3.234.0",
+    "@aws-sdk/client-cloudwatch-logs": "3.234.0",
+    "@aws-sdk/client-iam": "3.234.0",
+    "@aws-sdk/client-s3": "3.234.0",
+    "@aws-sdk/client-ssm": "3.234.0",
     "@nordicsemiconductor/from-env": "1.0.3"
   }
 }
