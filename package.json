@@ -27,7 +27,7 @@
     "@types/glob": "8.0.0",
     "@types/node": "18.11.18",
     "@types/yazl": "2.4.2",
-    "aws-cdk-lib": "2.58.1",
+    "aws-cdk-lib": "2.59.0",
     "cdk": "2.59.0",
     "constructs": "10.1.208",
     "glob": "8.0.3",
