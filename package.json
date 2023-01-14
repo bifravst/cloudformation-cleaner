@@ -29,7 +29,7 @@
     "@types/yazl": "2.4.2",
     "aws-cdk-lib": "2.60.0",
     "cdk": "2.60.0",
-    "constructs": "10.1.218",
+    "constructs": "10.1.219",
     "glob": "8.0.3",
     "tsx": "3.12.2",
     "yazl": "2.5.1"
