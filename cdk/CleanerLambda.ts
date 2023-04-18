@@ -1,10 +1,10 @@
 import {
+	aws_logs as CloudWatchLogs,
+	Duration,
 	aws_events as Events,
 	aws_events_targets as EventsTargets,
 	aws_iam as IAM,
 	aws_lambda as Lambda,
-	aws_logs as CloudWatchLogs,
-	Duration,
 	RemovalPolicy,
 	Stack,
 } from 'aws-cdk-lib'
