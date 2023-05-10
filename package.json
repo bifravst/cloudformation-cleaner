@@ -68,7 +68,7 @@
     "@aws-sdk/client-cloudformation": "3.329.0",
     "@aws-sdk/client-cloudwatch-logs": "3.329.0",
     "@aws-sdk/client-iam": "3.329.0",
-    "@aws-sdk/client-s3": "3.329.0",
+    "@aws-sdk/client-s3": "3.331.0",
     "@aws-sdk/client-ssm": "3.329.0",
     "@nordicsemiconductor/from-env": "2.0.0"
   }
