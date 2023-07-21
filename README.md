@@ -41,3 +41,15 @@ according to the following table
 | `log-group-cleaner` | `/${stackName}/logGroupNameRegEx` |
 | `role-cleaner`      | `/${stackName}/roleNameRegEx`     |
 | `buckets-cleaner`   | `/${stackName}/bucketNameRegEx`   |
+
+You can configure this from the command line:
+
+```bash
+aws ssm put-parameter --name /cloudformation-cleaner/stackNameRegEx --value '^(some-pattern|another-pattern)-' --overwrite
+```
+
+## Running from the command line
+
+```bash
+npx tsx ./cli.ts
+```

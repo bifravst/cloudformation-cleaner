@@ -6,8 +6,8 @@ import * as glob from 'glob'
 import * as path from 'path'
 import * as yazl from 'yazl'
 import { App } from './App'
+import { STACK_NAME } from './STACK_NAME.js'
 
-const STACK_NAME = process.env.STACK_NAME ?? 'cloudformation-cleaner'
 const lambdaDir = path.resolve(process.cwd(), 'dist', 'lambda')
 const layerDir = path.resolve(process.cwd(), 'dist', 'layer')
 const layerZipFileLocation = path.resolve(process.cwd(), 'dist', 'layer.zip')

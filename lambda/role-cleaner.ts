@@ -18,14 +18,14 @@ const { roleNameNameRegExpParamName } = fromEnv({
 	roleNameNameRegExpParamName: 'ROLE_NAME_REGEX_PARAMETER_NAME',
 })(process.env)
 
-const roleNameNameRegExpPromise = (async () => {
+const roleNameNamePatternPromise = (async () => {
 	const res = await ssm.send(
 		new GetParameterCommand({
 			Name: roleNameNameRegExpParamName,
 		}),
 	)
 
-	return new RegExp(res.Parameter?.Value ?? /^asset-tracker-/)
+	return res.Parameter?.Value ?? '^asset-tracker-'
 })()
 
 /**
@@ -33,10 +33,23 @@ const roleNameNameRegExpPromise = (async () => {
  */
 const findRolesToDelete = async (
 	limit = 100,
-	rolesToDelete: string[] = [],
+	rolesToDelete?: {
+		resources: string[]
+		pattern: string
+	},
 	startToken?: string,
-): Promise<string[]> => {
-	if (rolesToDelete.length >= limit) return rolesToDelete
+): Promise<{
+	resources: string[]
+	pattern: string
+}> => {
+	const roleNamePattern = await roleNameNamePatternPromise
+	if (rolesToDelete === undefined) {
+		rolesToDelete = {
+			pattern: roleNamePattern,
+			resources: [],
+		}
+	}
+	if (rolesToDelete.resources.length >= limit) return rolesToDelete
 	const { Roles, Marker } = await iam.send(
 		new ListRolesCommand({
 			MaxItems: 50,
@@ -44,7 +57,7 @@ const findRolesToDelete = async (
 		}),
 	)
 
-	const roleNameRegExp = await roleNameNameRegExpPromise
+	const roleNameRegExp = new RegExp(roleNamePattern)
 
 	if (Roles !== undefined) {
 		const foundRolesToDelete: string[] = Roles.filter(({ RoleName }) =>
@@ -62,17 +75,20 @@ const findRolesToDelete = async (
 			({ RoleName }) => !foundRolesToDelete.includes(RoleName ?? ''),
 		).map(({ RoleName }) => RoleName)
 		ignoredRoles?.forEach((name) => console.log(`Ignored: ${name}`))
-		rolesToDelete.push(...foundRolesToDelete)
+		rolesToDelete.resources.push(...foundRolesToDelete)
 	}
 	if (Marker !== undefined && Marker !== null)
 		return findRolesToDelete(limit, rolesToDelete, Marker)
 	return rolesToDelete
 }
 
-export const handler = async (): Promise<void> => {
+export const handler = async (): Promise<{
+	resources: string[]
+	pattern: string
+}> => {
 	// Find old log roles to delete
 	const rolesToDelete = await findRolesToDelete()
-	await rolesToDelete.reduce(
+	await rolesToDelete.resources.reduce(
 		async (promise, RoleName) =>
 			promise.then(async () => {
 				try {
@@ -103,4 +119,6 @@ export const handler = async (): Promise<void> => {
 			}),
 		Promise.resolve(),
 	)
+
+	return rolesToDelete
 }

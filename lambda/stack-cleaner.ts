@@ -20,14 +20,13 @@ const { stackNameRegexpParamName } = fromEnv({
 	stackNameRegexpParamName: 'STACK_NAME_REGEX_PARAMETER_NAME',
 })(process.env)
 
-const stackNameRegexpPromise = (async () => {
+const stackNamePatternPromise = (async () => {
 	const res = await ssm.send(
 		new GetParameterCommand({
 			Name: stackNameRegexpParamName,
 		}),
 	)
-
-	return new RegExp(res.Parameter?.Value ?? /^asset-tracker-/)
+	return res.Parameter?.Value ?? '^asset-tracker-'
 })()
 
 /**
@@ -35,9 +34,22 @@ const stackNameRegexpPromise = (async () => {
  */
 const findStacksToDelete = async (
 	limit = 100,
-	stacksToDelete: string[] = [],
-): Promise<string[]> => {
-	if (stacksToDelete.length >= limit) return stacksToDelete
+	stacksToDelete?: {
+		pattern: string
+		resources: string[]
+	},
+): Promise<{
+	pattern: string
+	resources: string[]
+}> => {
+	const stackNamePattern = await stackNamePatternPromise
+	if (stacksToDelete === undefined) {
+		stacksToDelete = {
+			pattern: stackNamePattern,
+			resources: [],
+		}
+	}
+	if (stacksToDelete.resources.length >= limit) return stacksToDelete
 	const { StackSummaries } = await cf.send(
 		new ListStacksCommand({
 			StackStatusFilter: [
@@ -51,7 +63,7 @@ const findStacksToDelete = async (
 		}),
 	)
 
-	const stackNameRegexp = await stackNameRegexpPromise
+	const stackNameRegexp = new RegExp(stackNamePattern)
 
 	if (StackSummaries !== undefined) {
 		const foundStacksToDelete: string[] = StackSummaries.filter(
@@ -64,31 +76,33 @@ const findStacksToDelete = async (
 			)
 			.map(({ StackName }) => StackName as string)
 
-		//  log groups
 		const ignoredStacks = StackSummaries?.filter(
 			({ StackName }) => !foundStacksToDelete.includes(StackName ?? ''),
 		).map(({ StackName }) => StackName)
 		ignoredStacks?.forEach((name) => console.log(`Ignored: ${name}`))
-		stacksToDelete.push(...foundStacksToDelete)
+		stacksToDelete.resources.push(...foundStacksToDelete)
 	}
 	return stacksToDelete
 }
 
-export const handler = async (): Promise<void> => {
+export const handler = async (): Promise<{
+	pattern: string
+	resources: string[]
+}> => {
 	const stacksToDelete = await findStacksToDelete()
 
 	// Shuffle the array, this helps to delete stacks which have dependencies to other stacks.
 	// Eventually all stacks will be deleted in the right order
-	for (let i = stacksToDelete.length - 1; i > 0; i--) {
+	for (let i = stacksToDelete.resources.length - 1; i > 0; i--) {
 		const j = Math.floor(Math.random() * (i + 1))
-		;[stacksToDelete[i], stacksToDelete[j]] = [
-			stacksToDelete[j],
-			stacksToDelete[i],
+		;[stacksToDelete.resources[i], stacksToDelete.resources[j]] = [
+			stacksToDelete.resources[j],
+			stacksToDelete.resources[i],
 		]
 	}
 
 	// Delete at most 10 stacks at once (again to compensate for dependencies)
-	return stacksToDelete.slice(0, 10).reduce(
+	await stacksToDelete.resources.slice(0, 10).reduce(
 		async (promise, StackName) =>
 			promise.then(async () => {
 				// Delete S3 Buckets of the stack
@@ -108,4 +122,6 @@ export const handler = async (): Promise<void> => {
 			}),
 		Promise.resolve(),
 	)
+
+	return stacksToDelete
 }

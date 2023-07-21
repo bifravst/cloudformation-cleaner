@@ -14,27 +14,35 @@ const { bucketNameRegexpParamName } = fromEnv({
 	bucketNameRegexpParamName: 'BUCKET_NAME_REGEX_PARAMETER_NAME',
 })(process.env)
 
-const bucketNameRegexpPromise = (async () => {
+const bucketNamePatternPromise = (async () => {
 	const res = await ssm.send(
 		new GetParameterCommand({
 			Name: bucketNameRegexpParamName,
 		}),
 	)
 
-	return new RegExp(res.Parameter?.Value ?? /^asset-tracker-/)
+	return res.Parameter?.Value ?? `^asset-tracker-`
 })()
 
 /**
  * find buckets to delete
  */
-const findBucketsToDelete = async (): Promise<string[]> => {
+const findBucketsToDelete = async (): Promise<{
+	pattern: string
+	buckets: string[]
+}> => {
 	const { Buckets } = await s3.send(new ListBucketsCommand({}))
 
-	const bucketNameRegexp = await bucketNameRegexpPromise
+	const bucketNamePattern = await bucketNamePatternPromise
 
-	if (Buckets === undefined) return []
+	if (Buckets === undefined)
+		return {
+			pattern: bucketNamePattern,
+			buckets: [],
+		}
+	const bucketNamePatternRegExp = new RegExp(bucketNamePattern)
 	const foundParametersToDelete: string[] = Buckets.filter(({ Name }) =>
-		bucketNameRegexp.test(Name ?? ''),
+		bucketNamePatternRegExp.test(Name ?? ''),
 	)
 		.filter(
 			({ CreationDate }) =>
@@ -48,12 +56,24 @@ const findBucketsToDelete = async (): Promise<string[]> => {
 		({ Name }) => !foundParametersToDelete.includes(Name ?? ''),
 	).map(({ Name }) => Name)
 	ignoredBuckets?.forEach((name) => console.log(`Ignored: ${name}`))
-	return foundParametersToDelete
+	return {
+		pattern: bucketNamePattern,
+		buckets: foundParametersToDelete,
+	}
 }
 
-export const handler = async (): Promise<void> => {
-	for (const bucketName of await findBucketsToDelete()) {
+export const handler = async (): Promise<{
+	pattern: string
+	resources: string[]
+}> => {
+	const { buckets, pattern } = await findBucketsToDelete()
+	for (const bucketName of buckets) {
 		console.log(`Deleting: ${bucketName}`)
 		await rmBucket(bucketName)
+	}
+
+	return {
+		resources: buckets,
+		pattern,
 	}
 }

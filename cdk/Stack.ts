@@ -21,9 +21,15 @@ export class Stack extends CloudFormation.Stack {
 			parameterName: stackNameRegExParamName,
 		})
 
-		new CleanerLambda(this, 'stackCleanerLambda', 'stack-cleaner', [layer], {
-			STACK_NAME_REGEX_PARAMETER_NAME: stackNameRegExParamName,
-		})
+		const stackCleaner = new CleanerLambda(
+			this,
+			'stackCleanerLambda',
+			'stack-cleaner',
+			[layer],
+			{
+				STACK_NAME_REGEX_PARAMETER_NAME: stackNameRegExParamName,
+			},
+		)
 
 		const logGroupNameRegExParamName = `/${id}/logGroupNameRegEx`
 		new SSM.StringParameter(this, 'logGroupNameRegExParam', {
@@ -31,7 +37,7 @@ export class Stack extends CloudFormation.Stack {
 			parameterName: logGroupNameRegExParamName,
 		})
 
-		new CleanerLambda(
+		const logGroupCleaner = new CleanerLambda(
 			this,
 			'logGroupCleanerLambda',
 			'log-group-cleaner',
@@ -47,9 +53,15 @@ export class Stack extends CloudFormation.Stack {
 			parameterName: roleNameRegExParamName,
 		})
 
-		new CleanerLambda(this, 'roleCleanerLambda', 'role-cleaner', [layer], {
-			ROLE_NAME_REGEX_PARAMETER_NAME: roleNameRegExParamName,
-		})
+		const roleCleaner = new CleanerLambda(
+			this,
+			'roleCleanerLambda',
+			'role-cleaner',
+			[layer],
+			{
+				ROLE_NAME_REGEX_PARAMETER_NAME: roleNameRegExParamName,
+			},
+		)
 
 		const parameterNameRegExpParamName = `/${id}/parameterNameRegExp`
 		new SSM.StringParameter(this, 'parameterNameRegExpParam', {
@@ -57,7 +69,7 @@ export class Stack extends CloudFormation.Stack {
 			parameterName: parameterNameRegExpParamName,
 		})
 
-		new CleanerLambda(
+		const parameterCleaner = new CleanerLambda(
 			this,
 			'parameterCleanerLambda',
 			'parameter-cleaner',
@@ -73,8 +85,34 @@ export class Stack extends CloudFormation.Stack {
 			parameterName: bucketNameRegExpParamName,
 		})
 
-		new CleanerLambda(this, 'bucketCleanerLambda', 'bucket-cleaner', [layer], {
-			BUCKET_NAME_REGEX_PARAMETER_NAME: bucketNameRegExpParamName,
+		const bucketCleaner = new CleanerLambda(
+			this,
+			'bucketCleanerLambda',
+			'bucket-cleaner',
+			[layer],
+			{
+				BUCKET_NAME_REGEX_PARAMETER_NAME: bucketNameRegExpParamName,
+			},
+		)
+
+		new CloudFormation.CfnOutput(this, 'stackCleaner', {
+			value: stackCleaner.lambda.functionName,
+		})
+
+		new CloudFormation.CfnOutput(this, 'logGroupCleaner', {
+			value: logGroupCleaner.lambda.functionName,
+		})
+
+		new CloudFormation.CfnOutput(this, 'roleCleaner', {
+			value: roleCleaner.lambda.functionName,
+		})
+
+		new CloudFormation.CfnOutput(this, 'parameterCleaner', {
+			value: parameterCleaner.lambda.functionName,
+		})
+
+		new CloudFormation.CfnOutput(this, 'bucketCleaner', {
+			value: bucketCleaner.lambda.functionName,
 		})
 	}
 }

@@ -16,14 +16,14 @@ const { logGroupNameRegExpParamName } = fromEnv({
 	logGroupNameRegExpParamName: 'LOG_GROUP_NAME_REGEX_PARAMETER_NAME',
 })(process.env)
 
-const logGroupNameRegExpPromise = (async () => {
+const logGroupNamePatternPromise = (async () => {
 	const res = await ssm.send(
 		new GetParameterCommand({
 			Name: logGroupNameRegExpParamName,
 		}),
 	)
 
-	return new RegExp(res.Parameter?.Value ?? /^asset-tracker-/)
+	return res.Parameter?.Value ?? '^asset-tracker-'
 })()
 
 /**
@@ -31,10 +31,22 @@ const logGroupNameRegExpPromise = (async () => {
  */
 const findLogGroupsToDelete = async (
 	limit = 100,
-	logGroupsToDelete: string[] = [],
+	logGroupsToDelete?: {
+		pattern: string
+		resources: string[]
+	},
 	startToken?: string,
-): Promise<string[]> => {
-	if (logGroupsToDelete.length >= limit) return logGroupsToDelete
+): Promise<{
+	pattern: string
+	resources: string[]
+}> => {
+	const logGroupNamePattern = await logGroupNamePatternPromise
+	if (logGroupsToDelete === undefined)
+		logGroupsToDelete = {
+			pattern: logGroupNamePattern,
+			resources: [],
+		}
+	if (logGroupsToDelete.resources.length >= limit) return logGroupsToDelete
 	const { logGroups, nextToken } = await logs.send(
 		new DescribeLogGroupsCommand({
 			limit: 50,
@@ -42,7 +54,7 @@ const findLogGroupsToDelete = async (
 		}),
 	)
 
-	const logGroupNameRegExp = await logGroupNameRegExpPromise
+	const logGroupNameRegExp = new RegExp(logGroupNamePattern)
 
 	if (logGroups !== undefined) {
 		const foundLogGroupsToDelete: string[] = logGroups
@@ -62,17 +74,20 @@ const findLogGroupsToDelete = async (
 			)
 			.map(({ logGroupName }) => logGroupName)
 		ignoredLogGroups?.forEach((name) => console.log(`Ignored: ${name}`))
-		logGroupsToDelete.push(...foundLogGroupsToDelete)
+		logGroupsToDelete.resources.push(...foundLogGroupsToDelete)
 	}
 	if (nextToken !== undefined && nextToken !== null)
 		return findLogGroupsToDelete(limit, logGroupsToDelete, nextToken)
 	return logGroupsToDelete
 }
 
-export const handler = async (): Promise<void> => {
+export const handler = async (): Promise<{
+	pattern: string
+	resources: string[]
+}> => {
 	// Find old log groups to delete
 	const logGroupsToDelete = await findLogGroupsToDelete()
-	await logGroupsToDelete.reduce(
+	await logGroupsToDelete.resources.reduce(
 		async (promise, logGroupName) =>
 			promise.then(async () => {
 				const waitPromise = new Promise((resolve) => setTimeout(resolve, 500))
@@ -94,4 +109,5 @@ export const handler = async (): Promise<void> => {
 			}),
 		Promise.resolve(),
 	)
+	return logGroupsToDelete
 }

@@ -15,14 +15,14 @@ const { parameterNameRegexpParamName } = fromEnv({
 	parameterNameRegexpParamName: 'PARAMETER_NAME_REGEX_PARAMETER_NAME',
 })(process.env)
 
-const parameterNameRegexpPromise = (async () => {
+const parameterNamePatternPromise = (async () => {
 	const res = await ssm.send(
 		new GetParameterCommand({
 			Name: parameterNameRegexpParamName,
 		}),
 	)
 
-	return new RegExp(res.Parameter?.Value ?? /^asset-tracker-/)
+	return res.Parameter?.Value ?? `^asset-tracker-`
 })()
 
 /**
@@ -30,10 +30,22 @@ const parameterNameRegexpPromise = (async () => {
  */
 const findParametersToDelete = async (
 	limit = 1000,
-	parametersToDelete: string[] = [],
+	parametersToDelete?: {
+		pattern: string
+		resources: string[]
+	},
 	startToken?: string,
-): Promise<string[]> => {
-	if (parametersToDelete.length >= limit) return parametersToDelete
+): Promise<{
+	pattern: string
+	resources: string[]
+}> => {
+	const parameterNamePattern = await parameterNamePatternPromise
+	if (parametersToDelete === undefined)
+		parametersToDelete = {
+			pattern: parameterNamePattern,
+			resources: [],
+		}
+	if (parametersToDelete.resources.length >= limit) return parametersToDelete
 	const { Parameters, NextToken } = await ssm.send(
 		new GetParametersByPathCommand({
 			Path: '/',
@@ -42,7 +54,7 @@ const findParametersToDelete = async (
 		}),
 	)
 
-	const parameterNameRegexp = await parameterNameRegexpPromise
+	const parameterNameRegexp = new RegExp(parameterNamePattern)
 
 	if (Parameters !== undefined) {
 		const foundParametersToDelete: string[] = Parameters.filter(({ Name }) =>
@@ -60,7 +72,7 @@ const findParametersToDelete = async (
 			({ Name }) => !foundParametersToDelete.includes(Name ?? ''),
 		).map(({ Name }) => Name)
 		ignoredParameters?.forEach((name) => console.log(`Ignored: ${name}`))
-		parametersToDelete.push(...foundParametersToDelete)
+		parametersToDelete.resources.push(...foundParametersToDelete)
 	}
 	if (NextToken !== undefined && NextToken !== null) {
 		return findParametersToDelete(limit, parametersToDelete, NextToken)
@@ -68,13 +80,16 @@ const findParametersToDelete = async (
 	return parametersToDelete
 }
 
-export const handler = async (): Promise<void> => {
+export const handler = async (): Promise<{
+	pattern: string
+	resources: string[]
+}> => {
 	const parametersToDelete = await findParametersToDelete()
 
 	const chunkSize = 10
-	for (let i = 0; i < parametersToDelete.length; i += chunkSize) {
+	for (let i = 0; i < parametersToDelete.resources.length; i += chunkSize) {
 		const waitPromise = new Promise((resolve) => setTimeout(resolve, 500))
-		const chunk = parametersToDelete.slice(i, i + chunkSize)
+		const chunk = parametersToDelete.resources.slice(i, i + chunkSize)
 		console.log(`Deleting: ${chunk}`)
 		await ssm.send(
 			new DeleteParametersCommand({
@@ -83,4 +98,6 @@ export const handler = async (): Promise<void> => {
 		)
 		await waitPromise
 	}
+
+	return parametersToDelete
 }
