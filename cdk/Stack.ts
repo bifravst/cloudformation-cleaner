@@ -43,7 +43,7 @@ export class Stack extends CloudFormation.Stack {
 			'log-group-cleaner',
 			[layer],
 			{
-				LOG_GROUP_NAME_REGEX_PARAMETER_NAME: stackNameRegExParamName,
+				LOG_GROUP_NAME_REGEX_PARAMETER_NAME: logGroupNameRegExParamName,
 			},
 		)
 
