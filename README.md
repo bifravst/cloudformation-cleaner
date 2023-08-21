@@ -35,12 +35,13 @@ prefix and are older than 24 hours.
 You can configure the regular expression used to check against a resources names
 according to the following table
 
-| Lambda              | SSM Parameter Name                |
-| ------------------- | --------------------------------- |
-| `stack-cleaner`     | `/${stackName}/stackNameRegEx`    |
-| `log-group-cleaner` | `/${stackName}/logGroupNameRegEx` |
-| `role-cleaner`      | `/${stackName}/roleNameRegEx`     |
-| `buckets-cleaner`   | `/${stackName}/bucketNameRegEx`   |
+| Lambda              | SSM Parameter Name                 |
+| ------------------- | ---------------------------------- |
+| `stack-cleaner`     | `/${stackName}/stackNameRegEx`     |
+| `log-group-cleaner` | `/${stackName}/logGroupNameRegEx`  |
+| `role-cleaner`      | `/${stackName}/roleNameRegEx`      |
+| `buckets-cleaner`   | `/${stackName}/bucketNameRegEx`    |
+| `parameter-cleaner` | `/${stackName}/parameterNameRegEx` |
 
 You can configure this from the command line:
 

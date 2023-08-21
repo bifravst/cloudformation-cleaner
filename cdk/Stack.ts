@@ -1,6 +1,6 @@
 import * as CloudFormation from 'aws-cdk-lib'
 import { aws_lambda as Lambda, aws_ssm as SSM } from 'aws-cdk-lib'
-import { CleanerLambda } from './CleanerLambda'
+import { CleanerLambda } from './CleanerLambda.js'
 
 export class Stack extends CloudFormation.Stack {
 	public constructor(
@@ -63,7 +63,7 @@ export class Stack extends CloudFormation.Stack {
 			},
 		)
 
-		const parameterNameRegExpParamName = `/${id}/parameterNameRegExp`
+		const parameterNameRegExpParamName = `/${id}/parameterNameRegEx`
 		new SSM.StringParameter(this, 'parameterNameRegExpParam', {
 			stringValue: 'asset-tracker-',
 			parameterName: parameterNameRegExpParamName,
@@ -79,7 +79,7 @@ export class Stack extends CloudFormation.Stack {
 			},
 		)
 
-		const bucketNameRegExpParamName = `/${id}/bucketNameRegExp`
+		const bucketNameRegExpParamName = `/${id}/bucketNameRegEx`
 		new SSM.StringParameter(this, 'bucketNameRegExpParam', {
 			stringValue: 'asset-tracker-',
 			parameterName: bucketNameRegExpParamName,
