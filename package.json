@@ -26,7 +26,7 @@
     "@aws-sdk/client-lambda": "3.414.0",
     "@nordicsemiconductor/asset-tracker-cloud-code-style": "12.0.86",
     "@swc/cli": "0.1.62",
-    "@swc/core": "1.3.85",
+    "@swc/core": "1.3.86",
     "@types/glob": "8.1.0",
     "@types/node": "20.6.2",
     "@types/yazl": "2.4.2",
