@@ -5,7 +5,7 @@ import { writeFile } from 'fs/promises'
 import * as glob from 'glob'
 import * as path from 'path'
 import * as yazl from 'yazl'
-import { App } from './App'
+import { App } from './App.js'
 import { STACK_NAME } from './STACK_NAME.js'
 
 const lambdaDir = path.resolve(process.cwd(), 'dist', 'lambda')

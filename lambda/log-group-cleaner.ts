@@ -95,7 +95,7 @@ export const handler = async (): Promise<{
 					console.log(`Deleting log group: ${logGroupName}`)
 					await logs.send(
 						new DeleteLogGroupCommand({
-							logGroupName: logGroupName,
+							logGroupName,
 						}),
 					)
 				} catch (err) {
