@@ -77,7 +77,7 @@
   "dependencies": {
     "@aws-sdk/client-cloudwatch-logs": "3.454.0",
     "@aws-sdk/client-iam": "3.454.0",
-    "@aws-sdk/client-s3": "3.454.0",
+    "@aws-sdk/client-s3": "3.456.0",
     "@aws-sdk/client-ssm": "3.454.0",
     "@nordicsemiconductor/from-env": "2.0.0"
   },
