@@ -32,7 +32,7 @@
     "@types/glob": "8.1.0",
     "@types/node": "20.10.6",
     "@types/yazl": "2.4.5",
-    "@typescript-eslint/eslint-plugin": "6.16.0",
+    "@typescript-eslint/eslint-plugin": "6.17.0",
     "aws-cdk-lib": "2.117.0",
     "cdk": "2.117.0",
     "constructs": "10.3.0",
