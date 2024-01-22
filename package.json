@@ -24,7 +24,7 @@
   "devDependencies": {
     "@aws-sdk/client-cloudformation": "3.496.0",
     "@aws-sdk/client-lambda": "3.496.0",
-    "@commitlint/config-conventional": "18.4.4",
+    "@commitlint/config-conventional": "18.5.0",
     "@nordicsemiconductor/asset-tracker-cloud-code-style": "13.1.10",
     "@nordicsemiconductor/eslint-config-asset-tracker-cloud-typescript": "17.0.0",
     "@swc/cli": "0.1.64",
