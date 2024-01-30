@@ -1,3 +1,0 @@
-{
-  "app": "npx swc lambda -d dist/lambda && npx tsx cdk/cloudformation.ts"
-}
