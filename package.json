@@ -4,7 +4,7 @@
   "description": "Cleans old CloudFormation stacks and log groups, e.g. from CI runs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "type": "module",
   "repository": {
@@ -41,6 +41,7 @@
     "eslint-plugin-prefer-arrow": "1.2.3",
     "eslint-plugin-unicorn": "50.0.1",
     "glob": "10.3.10",
+    "husky": "9.0.7",
     "tsx": "4.7.0",
     "yazl": "2.5.1"
   },
