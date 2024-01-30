@@ -1,56 +1,33 @@
 {
-  "name": "@nordicsemiconductor/cloudformation-cleaner",
+  "name": "@nordicsemiconductor/asset-tracker-cloud-code-style",
   "version": "0.0.0-development",
-  "description": "Cleans old CloudFormation stacks and log groups, e.g. from CI runs",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky install"
-  },
-  "type": "module",
+  "description": "Code style definitions for all nRF Asset Tracker projects.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NordicSemiconductor/cloud-aws-cloudformation-cleaner-js.git"
+    "url": "git+https://github.com/NordicSemiconductor/asset-tracker-cloud-code-style-js.git"
   },
+  "bugs": {
+    "url": "https://github.com/NordicSemiconductor/asset-tracker-cloud-code-style-js/issues"
+  },
+  "homepage": "https://github.com/NordicSemiconductor/asset-tracker-cloud-code-style-js#readme",
   "keywords": [
-    "aws",
-    "cloudformation"
+    "nrf-asset-tracker",
+    "iot"
   ],
   "author": "Nordic Semiconductor ASA | nordicsemi.no",
   "license": "BSD-3-Clause",
-  "bugs": {
-    "url": "https://github.com/NordicSemiconductor/cloud-aws-cloudformation-cleaner-js/issues"
-  },
-  "homepage": "https://github.com/NordicSemiconductor/cloud-aws-cloudformation-cleaner-js#readme",
-  "devDependencies": {
-    "@aws-sdk/client-cloudformation": "3.502.0",
-    "@aws-sdk/client-lambda": "3.502.0",
-    "@commitlint/config-conventional": "18.6.0",
-    "@nordicsemiconductor/asset-tracker-cloud-code-style": "13.1.12",
-    "@nordicsemiconductor/eslint-config-asset-tracker-cloud-typescript": "17.0.0",
-    "@swc/cli": "0.3.5",
-    "@swc/core": "1.3.107",
-    "@types/glob": "8.1.0",
-    "@types/node": "20.11.10",
-    "@types/yazl": "2.4.5",
-    "@typescript-eslint/eslint-plugin": "6.20.0",
-    "aws-cdk-lib": "2.124.0",
-    "cdk": "2.124.0",
-    "constructs": "10.3.0",
-    "eslint-config-prettier": "9.1.0",
-    "eslint-plugin-import": "2.29.1",
-    "eslint-plugin-prefer-arrow": "1.2.3",
-    "eslint-plugin-unicorn": "50.0.1",
-    "glob": "10.3.10",
-    "tsx": "4.7.0",
-    "yazl": "2.5.1"
+  "dependencies": {
+    "@commitlint/cli": "18.6.0",
+    "eslint": "8.56.0",
+    "lint-staged": "15.2.0",
+    "pinst": "3.0.0",
+    "prettier": "3.2.4",
+    "prettier-plugin-organize-imports": "3.2.4",
+    "typescript": "5.3.3"
   },
   "lint-staged": {
-    "*.{md,json,yaml,yml}": [
-      "prettier --write"
-    ],
-    "*.{ts,tsx}": [
-      "prettier --write",
-      "eslint --ext .js,.ts"
+    "*.{yml,md,js,json}": [
+      "prettier --write --config .prettierrc.js"
     ]
   },
   "engines": {
@@ -65,6 +42,7 @@
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
+      "@semantic-release/npm",
       [
         "@semantic-release/github",
         {
@@ -74,12 +52,24 @@
       ]
     ]
   },
-  "dependencies": {
-    "@aws-sdk/client-cloudwatch-logs": "3.502.0",
-    "@aws-sdk/client-iam": "3.502.0",
-    "@aws-sdk/client-s3": "3.502.0",
-    "@aws-sdk/client-ssm": "3.502.0",
-    "@nordicsemiconductor/from-env": "3.0.0"
+  "publishConfig": {
+    "access": "public"
   },
-  "prettier": "@nordicsemiconductor/asset-tracker-cloud-code-style/.prettierrc"
+  "files": [
+    "package-lock.json",
+    "index.js",
+    "LICENSE",
+    "README.md",
+    ".prettierrc.js",
+    "tsconfig.json",
+    "templates"
+  ],
+  "scripts": {
+    "prepare": "husky",
+    "test": "npm exec -- renovate-config-validator"
+  },
+  "devDependencies": {
+    "@commitlint/config-conventional": "18.6.0",
+    "husky": "9.0.7"
+  }
 }
