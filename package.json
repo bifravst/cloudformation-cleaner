@@ -82,5 +82,5 @@
     "@aws-sdk/client-ssm": "3.515.0",
     "@nordicsemiconductor/from-env": "3.0.0"
   },
-  "prettier": "@nordicsemiconductor/asset-tracker-cloud-code-style/.prettierrc"
+  "prettier": "@bifravst/prettier-config"
 }
