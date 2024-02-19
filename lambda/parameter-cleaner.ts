@@ -90,7 +90,7 @@ export const handler = async (): Promise<{
 	for (let i = 0; i < parametersToDelete.resources.length; i += chunkSize) {
 		const waitPromise = new Promise((resolve) => setTimeout(resolve, 500))
 		const chunk = parametersToDelete.resources.slice(i, i + chunkSize)
-		console.log(`Deleting: ${chunk}`)
+		console.log(`Deleting: ${chunk.join(',')}`)
 		await ssm.send(
 			new DeleteParametersCommand({
 				Names: chunk,

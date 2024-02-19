@@ -25,8 +25,8 @@ jobs:
         run: npx tsc
       - name: Check source code with eslint
         run:
-          npx eslint --fix --ext .js,.ts,.jsx,.tsx --ignore-pattern
-          commitlint.config.js --ignore-path .gitignore ./
+          npx eslint --ignore-pattern commitlint.config.js --ignore-path
+          .gitignore ./
       - name: Check if source code is properly formatted
         run: npx prettier -c ./
       - name: Semantic release
