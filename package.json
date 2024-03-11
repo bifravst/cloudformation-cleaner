@@ -22,18 +22,18 @@
   },
   "homepage": "https://github.com/NordicSemiconductor/cloud-aws-cloudformation-cleaner-js#readme",
   "devDependencies": {
-    "@aws-sdk/client-cloudformation": "3.515.0",
-    "@aws-sdk/client-lambda": "3.515.0",
-    "@bifravst/eslint-config-typescript": "6.0.4",
+    "@aws-sdk/client-cloudformation": "3.529.1",
+    "@aws-sdk/client-lambda": "3.529.1",
+    "@bifravst/eslint-config-typescript": "6.0.10",
     "@bifravst/prettier-config": "1.0.0",
-    "@commitlint/config-conventional": "18.6.2",
-    "@swc/cli": "0.3.9",
-    "@swc/core": "1.4.1",
+    "@commitlint/config-conventional": "19.0.3",
+    "@swc/cli": "0.3.10",
+    "@swc/core": "1.4.6",
     "@types/glob": "8.1.0",
-    "@types/node": "20.11.19",
+    "@types/node": "20.11.25",
     "@types/yazl": "2.4.5",
-    "aws-cdk-lib": "2.128.0",
-    "cdk": "2.128.0",
+    "aws-cdk-lib": "2.132.0",
+    "cdk": "2.132.0",
     "constructs": "10.3.0",
     "glob": "10.3.10",
     "husky": "9.0.11",
@@ -71,11 +71,11 @@
     ]
   },
   "dependencies": {
-    "@aws-sdk/client-cloudwatch-logs": "3.515.0",
-    "@aws-sdk/client-iam": "3.515.0",
-    "@aws-sdk/client-s3": "3.515.0",
-    "@aws-sdk/client-ssm": "3.515.0",
-    "@nordicsemiconductor/from-env": "3.0.0"
+    "@aws-sdk/client-cloudwatch-logs": "3.529.1",
+    "@aws-sdk/client-iam": "3.529.1",
+    "@aws-sdk/client-s3": "3.529.1",
+    "@aws-sdk/client-ssm": "3.529.1",
+    "@nordicsemiconductor/from-env": "3.0.1"
   },
   "prettier": "@bifravst/prettier-config"
 }
