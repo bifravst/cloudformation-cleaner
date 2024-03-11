@@ -1,7 +1,10 @@
 {
+  "include": ["**/*.ts"],
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es2019",
+    "noEmit": true,
+    "target": "esnext",
+    "module": "ESNext",
+    "moduleResolution": "node",
     "lib": ["es2019"],
     "strict": true,
     "declaration": true,
