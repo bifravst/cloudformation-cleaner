@@ -22,8 +22,8 @@
   },
   "homepage": "https://github.com/NordicSemiconductor/cloud-aws-cloudformation-cleaner-js#readme",
   "devDependencies": {
-    "@aws-sdk/client-cloudformation": "3.532.0",
-    "@aws-sdk/client-lambda": "3.529.1",
+    "@aws-sdk/client-cloudformation": "3.533.0",
+    "@aws-sdk/client-lambda": "3.533.0",
     "@bifravst/eslint-config-typescript": "6.0.11",
     "@bifravst/prettier-config": "1.0.0",
     "@commitlint/config-conventional": "19.1.0",
@@ -71,10 +71,10 @@
     ]
   },
   "dependencies": {
-    "@aws-sdk/client-cloudwatch-logs": "3.529.1",
-    "@aws-sdk/client-iam": "3.529.1",
-    "@aws-sdk/client-s3": "3.529.1",
-    "@aws-sdk/client-ssm": "3.532.0",
+    "@aws-sdk/client-cloudwatch-logs": "3.533.0",
+    "@aws-sdk/client-iam": "3.533.0",
+    "@aws-sdk/client-s3": "3.533.0",
+    "@aws-sdk/client-ssm": "3.533.0",
     "@nordicsemiconductor/from-env": "3.0.1"
   },
   "prettier": "@bifravst/prettier-config"
