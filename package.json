@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/NordicSemiconductor/cloud-aws-cloudformation-cleaner-js#readme",
   "devDependencies": {
-    "@aws-sdk/client-cloudformation": "3.554.0",
+    "@aws-sdk/client-cloudformation": "3.555.0",
     "@aws-sdk/client-lambda": "3.554.0",
     "@bifravst/eslint-config-typescript": "6.0.22",
     "@bifravst/prettier-config": "1.0.0",
