@@ -72,7 +72,7 @@ const findStacksToDelete = async (
 			.filter(
 				({ CreationTime }) =>
 					Date.now() - (CreationTime?.getTime() ?? Date.now()) >
-					ageInHours * 60 * 60 * 100,
+					ageInHours * 60 * 60 * 1000,
 			)
 			.map(({ StackName }) => StackName as string)
 

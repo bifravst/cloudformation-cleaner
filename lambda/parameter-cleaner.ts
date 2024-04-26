@@ -63,7 +63,7 @@ const findParametersToDelete = async (
 			.filter(
 				({ LastModifiedDate }) =>
 					Date.now() - (LastModifiedDate?.getTime() ?? Date.now()) >
-					ageInHours * 60 * 60 * 100,
+					ageInHours * 60 * 60 * 1000,
 			)
 			.map(({ Name }) => Name as string)
 

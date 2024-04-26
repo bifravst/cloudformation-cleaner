@@ -47,7 +47,7 @@ const findBucketsToDelete = async (): Promise<{
 		.filter(
 			({ CreationDate }) =>
 				Date.now() - (CreationDate?.getTime() ?? Date.now()) >
-				ageInHours * 60 * 60 * 100,
+				ageInHours * 60 * 60 * 1000,
 		)
 		.map(({ Name }) => Name as string)
 

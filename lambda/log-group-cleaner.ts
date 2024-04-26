@@ -62,7 +62,7 @@ const findLogGroupsToDelete = async (
 			.filter(
 				({ creationTime }) =>
 					Date.now() - (creationTime ?? Date.now()) >
-					ageInHours * 60 * 60 * 100,
+					ageInHours * 60 * 60 * 1000,
 			)
 			.map(({ logGroupName }) => logGroupName as string)
 

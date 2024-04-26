@@ -66,7 +66,7 @@ const findRolesToDelete = async (
 			.filter(
 				({ CreateDate }) =>
 					Date.now() - (CreateDate?.getTime() ?? Date.now()) >
-					ageInHours * 60 * 60 * 100,
+					ageInHours * 60 * 60 * 1000,
 			)
 			.map(({ RoleName }) => RoleName as string)
 
