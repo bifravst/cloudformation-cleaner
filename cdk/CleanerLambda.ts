@@ -25,7 +25,7 @@ export class CleanerLambda extends Construct {
 		this.lambda = new Lambda.Function(this, 'lambda', {
 			code: Lambda.Code.fromAsset(path.join(process.cwd(), 'dist', 'lambda')),
 			description: `Cleans old CloudFormation resources (${source})`,
-			handler: `${source}.handler`,
+			handler: `lambda/${source}.handler`,
 			runtime: Lambda.Runtime.NODEJS_18_X,
 			timeout: Duration.minutes(5),
 			initialPolicy: [
