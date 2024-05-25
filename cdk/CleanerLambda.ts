@@ -1,3 +1,4 @@
+import type { Stack } from 'aws-cdk-lib'
 import {
 	aws_logs as CloudWatchLogs,
 	Duration,
@@ -6,7 +7,6 @@ import {
 	aws_iam as IAM,
 	aws_lambda as Lambda,
 	RemovalPolicy,
-	Stack,
 } from 'aws-cdk-lib'
 import { Construct } from 'constructs'
 import * as path from 'path'
