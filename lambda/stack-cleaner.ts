@@ -1,13 +1,13 @@
 import {
 	CloudFormationClient,
 	DeleteStackCommand,
-	DescribeStackResourcesCommand,
 	ListStacksCommand,
 } from '@aws-sdk/client-cloudformation'
 import { S3Client } from '@aws-sdk/client-s3'
 import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm'
 import { fromEnv } from '@nordicsemiconductor/from-env'
 import { deleteS3Bucket } from './deleteS3Bucket.js'
+import { listStackResources } from '@nordicsemiconductor/cloudformation-helpers'
 
 // TODO: make SSM parameter
 const ageInHours = 24
@@ -106,15 +106,17 @@ export const handler = async (): Promise<{
 		async (promise, StackName) =>
 			promise.then(async () => {
 				// Delete S3 Buckets of the stack
-				const resources = await cf.send(
-					new DescribeStackResourcesCommand({ StackName }),
+				const s3buckets = await listStackResources(
+					cf,
+					StackName,
+					'AWS::S3::Bucket',
 				)
-				const s3buckets = resources?.StackResources?.filter(
-					(res) => res.ResourceType === 'AWS::S3::Bucket',
+
+				await Promise.all(
+					s3buckets.map(async ({ PhysicalResourceId }) =>
+						deleteS3Bucket(s3)(PhysicalResourceId),
+					),
 				)
-					.map(({ PhysicalResourceId }) => PhysicalResourceId as string)
-					.filter((PhysicalResourceId) => PhysicalResourceId !== undefined)
-				await Promise.all(s3buckets?.map(deleteS3Bucket(s3)) ?? [])
 
 				// Delete the Stack itself
 				console.log(`Deleting: ${StackName}`)
