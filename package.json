@@ -28,7 +28,7 @@
     "@bifravst/prettier-config": "1.0.1",
     "@commitlint/config-conventional": "19.2.2",
     "@swc/cli": "0.3.12",
-    "@swc/core": "1.5.24",
+    "@swc/core": "1.5.25",
     "@types/glob": "8.1.0",
     "@types/node": "20.14.1",
     "@types/yazl": "2.4.5",
