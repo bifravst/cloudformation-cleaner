@@ -25,5 +25,4 @@ jobs:
         run: npx prettier -c ./
       - name: Semantic release
         if: success()
-        continue-on-error: true
         run: npx semantic-release
