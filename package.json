@@ -1,5 +1,5 @@
 {
-  "name": "@nordicsemiconductor/cloudformation-cleaner",
+  "name": "@bifravst/cloudformation-cleaner",
   "version": "0.0.0-development",
   "description": "Cleans old CloudFormation stacks and log groups, e.g. from CI runs",
   "scripts": {
@@ -9,7 +9,7 @@
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NordicSemiconductor/cloud-aws-cloudformation-cleaner-js.git"
+    "url": "git+https://github.com/bifravst/cloudformation-cleaner.git"
   },
   "keywords": [
     "aws",
@@ -18,9 +18,9 @@
   "author": "Nordic Semiconductor ASA | nordicsemi.no",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/NordicSemiconductor/cloud-aws-cloudformation-cleaner-js/issues"
+    "url": "https://github.com/bifravst/cloudformation-cleaner/issues"
   },
-  "homepage": "https://github.com/NordicSemiconductor/cloud-aws-cloudformation-cleaner-js#readme",
+  "homepage": "https://github.com/bifravst/cloudformation-cleaner#readme",
   "devDependencies": {
     "@aws-sdk/client-cloudformation": "3.614.0",
     "@aws-sdk/client-lambda": "3.614.0",
@@ -75,8 +75,8 @@
     "@aws-sdk/client-iam": "3.614.0",
     "@aws-sdk/client-s3": "3.614.0",
     "@aws-sdk/client-ssm": "3.614.0",
-    "@nordicsemiconductor/cloudformation-helpers": "9.1.0",
-    "@nordicsemiconductor/from-env": "3.0.1"
+    "@bifravst/cloudformation-helpers": "*",
+    "@bifravst/from-env": "*"
   },
   "prettier": "@bifravst/prettier-config"
 }

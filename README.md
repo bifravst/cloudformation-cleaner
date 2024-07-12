@@ -1,6 +1,6 @@
 # AWS CloudFormation Cleaner
 
-[![GitHub Actions](https://github.com/NordicSemiconductor/cloud-aws-cloudformation-cleaner-js/workflows/Test%20and%20Release/badge.svg)](https://github.com/NordicSemiconductor/cloud-aws-cloudformation-cleaner-js/actions)
+[![GitHub Actions](https://github.com/bifravst/cloudformation-cleaner/workflows/Test%20and%20Release/badge.svg)](https://github.com/bifravst/cloudformation-cleaner/actions)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 [![Renovate](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com)
 [![@commitlint/config-conventional](https://img.shields.io/badge/%40commitlint-config--conventional-brightgreen)](https://github.com/conventional-changelog/commitlint/tree/master/@commitlint/config-conventional)
@@ -18,7 +18,7 @@ prefix and are older than 24 hours.
 
 ## Install
 
-    git clone https://github.com/NordicSemiconductor/cloud-aws-cloudformation-cleaner-js
+    git clone https://github.com/bifravst/cloudformation-cleaner
     npm ci
 
 ## Setup in your CI account
