@@ -4,7 +4,7 @@ import {
 	DescribeLogGroupsCommand,
 } from '@aws-sdk/client-cloudwatch-logs'
 import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm'
-import { fromEnv } from '@nordicsemiconductor/from-env'
+import { fromEnv } from '@bifravst/from-env'
 
 // TODO: make SSM parameter
 const ageInHours = 24

@@ -1,6 +1,6 @@
 import { ListBucketsCommand, S3Client } from '@aws-sdk/client-s3'
 import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm'
-import { fromEnv } from '@nordicsemiconductor/from-env'
+import { fromEnv } from '@bifravst/from-env'
 import { deleteS3Bucket } from './deleteS3Bucket.js'
 
 // TODO: make SSM parameters
