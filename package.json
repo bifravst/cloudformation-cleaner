@@ -31,7 +31,7 @@
     "@swc/core": "1.10.14",
     "@types/glob": "8.1.0",
     "@types/node": "22.13.1",
-    "@types/yazl": "2.4.5",
+    "@types/yazl": "2.4.6",
     "aws-cdk-lib": "2.177.0",
     "cdk": "2.177.0",
     "constructs": "10.4.2",
