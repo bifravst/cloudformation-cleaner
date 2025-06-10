@@ -30,7 +30,7 @@
     "@swc/cli": "0.7.7",
     "@swc/core": "1.11.31",
     "@types/glob": "8.1.0",
-    "@types/node": "22.15.30",
+    "@types/node": "22.15.31",
     "@types/yazl": "2.4.6",
     "aws-cdk-lib": "2.200.1",
     "cdk": "2.1018.0",
