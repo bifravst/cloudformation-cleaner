@@ -1,16 +1,24 @@
+import type { PackedLayer } from '@bifravst/aws-cdk-lambda-helpers/layer'
 import * as CloudFormation from 'aws-cdk-lib'
-import { Stack } from './Stack.js'
+import type { CleanerLambdas } from './resources/lambdas.ts'
+import { Stack } from './Stack.ts'
 
 export class App extends CloudFormation.App {
 	public constructor({
 		stackName,
-		layerZipFileLocation,
+		baseLayerSource,
+		lambdaSources,
 	}: {
 		stackName: string
-		layerZipFileLocation: string
+		baseLayerSource: PackedLayer
+		lambdaSources: CleanerLambdas
 	}) {
-		super()
+		super({
+			context: {
+				isTest: false,
+			},
+		})
 
-		new Stack(this, stackName, { layerZipFileLocation })
+		new Stack(this, stackName, { baseLayerSource, lambdaSources })
 	}
 }

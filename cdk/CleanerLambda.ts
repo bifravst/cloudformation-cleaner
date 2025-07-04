@@ -1,58 +1,41 @@
-import type { Stack } from 'aws-cdk-lib'
+import type { PackedLambda } from '@bifravst/aws-cdk-lambda-helpers'
+import { PackedLambdaFn } from '@bifravst/aws-cdk-lambda-helpers/cdk'
+import type { aws_lambda as Lambda, Stack } from 'aws-cdk-lib'
 import {
-	aws_logs as CloudWatchLogs,
 	Duration,
 	aws_events as Events,
 	aws_events_targets as EventsTargets,
 	aws_iam as IAM,
-	aws_lambda as Lambda,
-	RemovalPolicy,
 } from 'aws-cdk-lib'
 import { Construct } from 'constructs'
-import * as path from 'path'
 
 export class CleanerLambda extends Construct {
 	public readonly lambda: Lambda.IFunction
 	public constructor(
 		parent: Stack,
 		id: string,
-		source: string,
+		source: PackedLambda,
 		layers: Lambda.ILayerVersion[],
 		environment: Record<string, string>,
 	) {
 		super(parent, id)
 
-		this.lambda = new Lambda.Function(this, 'lambda', {
-			code: Lambda.Code.fromAsset(path.join(process.cwd(), 'dist', 'lambda')),
-			description: `Cleans old CloudFormation resources (${source})`,
-			handler: `lambda/${source}.handler`,
-			runtime: Lambda.Runtime.NODEJS_18_X,
+		this.lambda = new PackedLambdaFn(this, 'lambda', source, {
+			description: `Cleans old CloudFormation resources (${id})`,
 			timeout: Duration.minutes(5),
 			initialPolicy: [
 				new IAM.PolicyStatement({
 					resources: ['*'],
 					actions: ['*'],
 				}),
-				new IAM.PolicyStatement({
-					actions: ['ssm:GetParametersByPath', 'ssm:GetParameter'],
-					resources: [
-						`arn:aws:ssm:${parent.region}:${parent.account}:parameter/${parent.stackName}/*`,
-					],
-				}),
 			],
 			layers,
 			environment,
-		})
-
-		new CloudWatchLogs.LogGroup(this, 'LogGroup', {
-			removalPolicy: RemovalPolicy.DESTROY,
-			logGroupName: `/aws/lambda/${this.lambda.functionName}`,
-			retention: CloudWatchLogs.RetentionDays.ONE_WEEK,
-		})
+		}).fn
 
 		const rule = new Events.Rule(this, 'invokeMessageCounterRule', {
 			schedule: Events.Schedule.expression('rate(1 hour)'),
-			description: `Invoke the ${source} which cleans up old CloudFormation resources`,
+			description: `Invoke the ${id} which cleans up old CloudFormation resources`,
 			enabled: true,
 			targets: [new EventsTargets.LambdaFunction(this.lambda)],
 		})

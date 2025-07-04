@@ -7,7 +7,7 @@ import { S3Client } from '@aws-sdk/client-s3'
 import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm'
 import { listStackResources } from '@bifravst/cloudformation-helpers'
 import { fromEnv } from '@bifravst/from-env'
-import { deleteS3Bucket } from './deleteS3Bucket.js'
+import { deleteS3Bucket } from './deleteS3Bucket.ts'
 
 // TODO: make SSM parameter
 const ageInHours = 24

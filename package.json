@@ -4,7 +4,8 @@
   "description": "Cleans old CloudFormation stacks and log groups, e.g. from CI runs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky"
+    "prepare": "husky",
+    "clean": "node --no-warnings --experimental-transform-types ./cli.ts"
   },
   "type": "module",
   "repository": {
@@ -24,21 +25,20 @@
   "devDependencies": {
     "@aws-sdk/client-cloudformation": "3.840.0",
     "@aws-sdk/client-lambda": "3.840.0",
+    "@aws-sdk/client-cloudwatch-logs": "3.840.0",
+    "@aws-sdk/client-iam": "3.840.0",
+    "@aws-sdk/client-s3": "3.842.0",
+    "@aws-sdk/client-ssm": "3.840.0",
+    "@bifravst/aws-cdk-lambda-helpers": "3.3.77",
     "@bifravst/eslint-config-typescript": "6.4.1",
     "@bifravst/prettier-config": "1.1.11",
     "@commitlint/config-conventional": "19.8.1",
-    "@swc/cli": "0.7.7",
-    "@swc/core": "1.12.9",
-    "@types/glob": "8.1.0",
-    "@types/node": "22.16.0",
-    "@types/yazl": "2.4.6",
+    "@types/glob": "9.0.0",
+    "@types/node": "24.0.10",
     "aws-cdk-lib": "2.203.1",
     "cdk": "2.1020.2",
     "constructs": "10.4.2",
-    "glob": "11.0.3",
-    "husky": "9.1.7",
-    "tsx": "4.20.3",
-    "yazl": "3.3.1"
+    "husky": "9.1.7"
   },
   "lint-staged": {
     "*.{md,json,yaml,yml}": [
@@ -50,7 +50,7 @@
     ]
   },
   "engines": {
-    "node": ">=22",
+    "node": ">=22.13.0",
     "npm": ">=10"
   },
   "release": {
@@ -71,10 +71,6 @@
     ]
   },
   "dependencies": {
-    "@aws-sdk/client-cloudwatch-logs": "3.840.0",
-    "@aws-sdk/client-iam": "3.840.0",
-    "@aws-sdk/client-s3": "3.842.0",
-    "@aws-sdk/client-ssm": "3.840.0",
     "@bifravst/cloudformation-helpers": "9.1.1",
     "@bifravst/from-env": "3.0.2"
   },

@@ -3,7 +3,7 @@ import {
 	DescribeStacksCommand,
 } from '@aws-sdk/client-cloudformation'
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda'
-import { STACK_NAME } from './cdk/STACK_NAME.js'
+import { STACK_NAME } from './cdk/STACK_NAME.ts'
 
 const cf = new CloudFormationClient({})
 const lambda = new LambdaClient({})

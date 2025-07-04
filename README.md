@@ -45,11 +45,11 @@ according to the following table
 You can configure this from the command line:
 
 ```bash
-aws ssm put-parameter --name /cloudformation-cleaner/stackNameRegEx --value '^(some-pattern|another-pattern)-' --overwrite
+aws ssm put-parameter --name /cloudformation-cleaner/stackNameRegEx --value '^(some-pattern|another-pattern)-' --type String --overwrite
 ```
 
 ## Running from the command line
 
 ```bash
-npx tsx ./cli.ts
+npm run clean
 ```

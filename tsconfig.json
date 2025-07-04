@@ -1,11 +1,11 @@
 {
   "include": ["**/*.ts"],
+  "exclude": ["cdk.out/**/*", "dist/**/*"],
   "compilerOptions": {
     "noEmit": true,
     "target": "esnext",
     "module": "nodenext",
     "moduleResolution": "nodenext",
-    "lib": ["es2019"],
     "strict": true,
     "declaration": true,
     "skipLibCheck": true,
@@ -16,6 +16,8 @@
     "removeComments": true,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true
   }
 }

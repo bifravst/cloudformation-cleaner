@@ -1,19 +1,22 @@
+import type { PackedLayer } from '@bifravst/aws-cdk-lambda-helpers/layer'
 import * as CloudFormation from 'aws-cdk-lib'
-import { aws_lambda as Lambda, aws_ssm as SSM } from 'aws-cdk-lib'
-import { CleanerLambda } from './CleanerLambda.js'
+import { aws_ssm as SSM } from 'aws-cdk-lib'
+import { CleanerLambda } from './CleanerLambda.ts'
+import { BaseLayerVersion } from './resources/BaseLayerVersion.ts'
+import type { CleanerLambdas } from './resources/lambdas.ts'
 
 export class Stack extends CloudFormation.Stack {
 	public constructor(
 		parent: CloudFormation.App,
 		id: string,
-		{ layerZipFileLocation }: { layerZipFileLocation: string },
+		{
+			baseLayerSource,
+			lambdaSources,
+		}: { lambdaSources: CleanerLambdas; baseLayerSource: PackedLayer },
 	) {
 		super(parent, id)
 
-		const layer = new Lambda.LayerVersion(this, 'layer', {
-			compatibleRuntimes: [Lambda.Runtime.NODEJS_18_X],
-			code: Lambda.Code.fromAsset(layerZipFileLocation),
-		})
+		const layer = new BaseLayerVersion(this, baseLayerSource)
 
 		const stackNameRegExParamName = `/${id}/stackNameRegEx`
 		new SSM.StringParameter(this, 'stackNameRegExParam', {
@@ -24,8 +27,8 @@ export class Stack extends CloudFormation.Stack {
 		const stackCleaner = new CleanerLambda(
 			this,
 			'stackCleanerLambda',
-			'stack-cleaner',
-			[layer],
+			lambdaSources.stackCleaner,
+			[layer.layerVersion],
 			{
 				STACK_NAME_REGEX_PARAMETER_NAME: stackNameRegExParamName,
 			},
@@ -40,8 +43,8 @@ export class Stack extends CloudFormation.Stack {
 		const logGroupCleaner = new CleanerLambda(
 			this,
 			'logGroupCleanerLambda',
-			'log-group-cleaner',
-			[layer],
+			lambdaSources.logGroupCleaner,
+			[layer.layerVersion],
 			{
 				LOG_GROUP_NAME_REGEX_PARAMETER_NAME: logGroupNameRegExParamName,
 			},
@@ -56,8 +59,8 @@ export class Stack extends CloudFormation.Stack {
 		const roleCleaner = new CleanerLambda(
 			this,
 			'roleCleanerLambda',
-			'role-cleaner',
-			[layer],
+			lambdaSources.roleCleaner,
+			[layer.layerVersion],
 			{
 				ROLE_NAME_REGEX_PARAMETER_NAME: roleNameRegExParamName,
 			},
@@ -72,8 +75,8 @@ export class Stack extends CloudFormation.Stack {
 		const parameterCleaner = new CleanerLambda(
 			this,
 			'parameterCleanerLambda',
-			'parameter-cleaner',
-			[layer],
+			lambdaSources.parameterCleaner,
+			[layer.layerVersion],
 			{
 				PARAMETER_NAME_REGEX_PARAMETER_NAME: parameterNameRegExpParamName,
 			},
@@ -88,8 +91,8 @@ export class Stack extends CloudFormation.Stack {
 		const bucketCleaner = new CleanerLambda(
 			this,
 			'bucketCleanerLambda',
-			'bucket-cleaner',
-			[layer],
+			lambdaSources.bucketCleaner,
+			[layer.layerVersion],
 			{
 				BUCKET_NAME_REGEX_PARAMETER_NAME: bucketNameRegExpParamName,
 			},
