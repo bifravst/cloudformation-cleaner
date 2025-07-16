@@ -25,7 +25,7 @@
   "devDependencies": {
     "@aws-sdk/client-cloudformation": "3.846.0",
     "@aws-sdk/client-lambda": "3.846.0",
-    "@aws-sdk/client-cloudwatch-logs": "3.846.0",
+    "@aws-sdk/client-cloudwatch-logs": "3.847.0",
     "@aws-sdk/client-iam": "3.846.0",
     "@aws-sdk/client-s3": "3.846.0",
     "@aws-sdk/client-ssm": "3.846.0",
