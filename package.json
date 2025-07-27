@@ -31,7 +31,7 @@
     "@aws-sdk/client-ssm": "3.848.0",
     "@bifravst/aws-cdk-lambda-helpers": "3.4.9",
     "@bifravst/eslint-config-typescript": "6.4.2",
-    "@bifravst/prettier-config": "1.1.11",
+    "@bifravst/prettier-config": "1.1.12",
     "@commitlint/config-conventional": "19.8.1",
     "@types/glob": "9.0.0",
     "@types/node": "24.0.14",
