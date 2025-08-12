@@ -24,7 +24,7 @@
   "homepage": "https://github.com/bifravst/cloudformation-cleaner#readme",
   "devDependencies": {
     "@aws-sdk/client-cloudformation": "3.864.0",
-    "@aws-sdk/client-lambda": "3.864.0",
+    "@aws-sdk/client-lambda": "3.865.0",
     "@aws-sdk/client-cloudwatch-logs": "3.864.0",
     "@aws-sdk/client-iam": "3.864.0",
     "@aws-sdk/client-s3": "3.864.0",
