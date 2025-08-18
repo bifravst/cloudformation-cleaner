@@ -20,7 +20,7 @@ export class Stack extends CloudFormation.Stack {
 
 		const stackNameRegExParamName = `/${id}/stackNameRegEx`
 		new SSM.StringParameter(this, 'stackNameRegExParam', {
-			stringValue: 'asset-tracker-',
+			stringValue: this.node.tryGetContext('prefix') ?? 'asset-tracker-',
 			parameterName: stackNameRegExParamName,
 		})
 
@@ -36,7 +36,7 @@ export class Stack extends CloudFormation.Stack {
 
 		const logGroupNameRegExParamName = `/${id}/logGroupNameRegEx`
 		new SSM.StringParameter(this, 'logGroupNameRegExParam', {
-			stringValue: 'asset-tracker-',
+			stringValue: this.node.tryGetContext('prefix') ?? 'asset-tracker-',
 			parameterName: logGroupNameRegExParamName,
 		})
 
@@ -52,7 +52,7 @@ export class Stack extends CloudFormation.Stack {
 
 		const roleNameRegExParamName = `/${id}/roleNameRegEx`
 		new SSM.StringParameter(this, 'roleNameRegExParam', {
-			stringValue: 'asset-tracker-',
+			stringValue: this.node.tryGetContext('prefix') ?? 'asset-tracker-',
 			parameterName: roleNameRegExParamName,
 		})
 
@@ -68,7 +68,7 @@ export class Stack extends CloudFormation.Stack {
 
 		const parameterNameRegExpParamName = `/${id}/parameterNameRegEx`
 		new SSM.StringParameter(this, 'parameterNameRegExpParam', {
-			stringValue: 'asset-tracker-',
+			stringValue: this.node.tryGetContext('prefix') ?? 'asset-tracker-',
 			parameterName: parameterNameRegExpParamName,
 		})
 
@@ -84,7 +84,7 @@ export class Stack extends CloudFormation.Stack {
 
 		const bucketNameRegExpParamName = `/${id}/bucketNameRegEx`
 		new SSM.StringParameter(this, 'bucketNameRegExpParam', {
-			stringValue: 'asset-tracker-',
+			stringValue: this.node.tryGetContext('prefix') ?? 'asset-tracker-',
 			parameterName: bucketNameRegExpParamName,
 		})
 

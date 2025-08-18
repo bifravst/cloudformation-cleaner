@@ -27,7 +27,9 @@ prefix and are older than 24 hours.
 > stack can be deleted, because this lambda has the permissions to delete
 > everything.
 
-    npx cdk deploy
+    npx cdk deploy --context prefix=my-prefix-
+
+You should specify the prefix your stacks use in the context variable `prefix`.
 
 ### Configuration
 
