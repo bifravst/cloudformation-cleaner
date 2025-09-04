@@ -34,7 +34,7 @@
     "@bifravst/prettier-config": "1.1.12",
     "@commitlint/config-conventional": "19.8.1",
     "@types/glob": "9.0.0",
-    "@types/node": "24.3.0",
+    "@types/node": "24.3.1",
     "aws-cdk-lib": "2.214.0",
     "cdk": "2.1028.0",
     "constructs": "10.4.2",
