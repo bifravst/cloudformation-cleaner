@@ -27,7 +27,7 @@
     "@aws-sdk/client-lambda": "3.883.0",
     "@aws-sdk/client-cloudwatch-logs": "3.883.0",
     "@aws-sdk/client-iam": "3.883.0",
-    "@aws-sdk/client-s3": "3.883.0",
+    "@aws-sdk/client-s3": "3.884.0",
     "@aws-sdk/client-ssm": "3.883.0",
     "@bifravst/aws-cdk-lambda-helpers": "3.5.17",
     "@bifravst/eslint-config-typescript": "6.4.3",
