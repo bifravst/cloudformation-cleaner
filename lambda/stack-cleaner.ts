@@ -1,6 +1,7 @@
 import {
 	CloudFormationClient,
 	DeleteStackCommand,
+	DeletionMode,
 	ListStacksCommand,
 } from '@aws-sdk/client-cloudformation'
 import { S3Client } from '@aws-sdk/client-s3'
@@ -120,7 +121,12 @@ export const handler = async (): Promise<{
 
 				// Delete the Stack itself
 				console.log(`Deleting: ${StackName}`)
-				await cf.send(new DeleteStackCommand({ StackName }))
+				await cf.send(
+					new DeleteStackCommand({
+						StackName,
+						DeletionMode: DeletionMode.FORCE_DELETE_STACK,
+					}),
+				)
 			}),
 		Promise.resolve(),
 	)
