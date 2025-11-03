@@ -24,9 +24,9 @@
   "homepage": "https://github.com/bifravst/cloudformation-cleaner#readme",
   "devDependencies": {
     "@aws-sdk/client-cloudformation": "3.922.0",
-    "@aws-sdk/client-lambda": "3.922.0",
     "@aws-sdk/client-cloudwatch-logs": "3.922.0",
     "@aws-sdk/client-iam": "3.922.0",
+    "@aws-sdk/client-lambda": "3.922.0",
     "@aws-sdk/client-s3": "3.922.0",
     "@aws-sdk/client-ssm": "3.922.0",
     "@bifravst/aws-cdk-lambda-helpers": "3.5.84",
@@ -38,7 +38,8 @@
     "aws-cdk-lib": "2.221.1",
     "cdk": "2.1031.1",
     "constructs": "10.4.2",
-    "husky": "9.1.7"
+    "husky": "9.1.7",
+    "lint-staged": "16.2.6"
   },
   "lint-staged": {
     "*.{md,json,yaml,yml}": [
