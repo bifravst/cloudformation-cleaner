@@ -3,11 +3,13 @@ import {
 	DeleteStackCommand,
 	DeletionMode,
 	ListStacksCommand,
+	StackStatus,
 } from '@aws-sdk/client-cloudformation'
 import { S3Client } from '@aws-sdk/client-s3'
 import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm'
 import { listStackResources } from '@bifravst/cloudformation-helpers'
 import { fromEnv } from '@bifravst/from-env'
+import assert from 'node:assert'
 import { deleteS3Bucket } from './deleteS3Bucket.ts'
 
 // TODO: make SSM parameter
@@ -37,11 +39,11 @@ const findStacksToDelete = async (
 	limit = 100,
 	stacksToDelete?: {
 		pattern: string
-		resources: string[]
+		resources: { StackName: string; StackStatus: StackStatus }[]
 	},
 ): Promise<{
 	pattern: string
-	resources: string[]
+	resources: { StackName: string; StackStatus: StackStatus }[]
 }> => {
 	const stackNamePattern = await stackNamePatternPromise
 	if (stacksToDelete === undefined) {
@@ -64,25 +66,34 @@ const findStacksToDelete = async (
 		}),
 	)
 
+	assert(StackSummaries, 'StackSummaries is undefined')
+
 	const stackNameRegexp = new RegExp(stackNamePattern)
 
-	if (StackSummaries !== undefined) {
-		const foundStacksToDelete: string[] = StackSummaries.filter(
-			({ StackName }) => stackNameRegexp.test(StackName ?? ''),
+	const foundStacksToDelete: string[] = StackSummaries.filter(({ StackName }) =>
+		stackNameRegexp.test(StackName ?? ''),
+	)
+		.filter(
+			({ CreationTime }) =>
+				Date.now() - (CreationTime?.getTime() ?? Date.now()) >
+				ageInHours * 60 * 60 * 1000,
 		)
-			.filter(
-				({ CreationTime }) =>
-					Date.now() - (CreationTime?.getTime() ?? Date.now()) >
-					ageInHours * 60 * 60 * 1000,
-			)
-			.map(({ StackName }) => StackName as string)
+		.map(({ StackName }) => StackName as string)
 
-		const ignoredStacks = StackSummaries?.filter(
-			({ StackName }) => !foundStacksToDelete.includes(StackName ?? ''),
-		).map(({ StackName }) => StackName)
-		ignoredStacks?.forEach((name) => console.log(`Ignored: ${name}`))
-		stacksToDelete.resources.push(...foundStacksToDelete)
-	}
+	const ignoredStacks = StackSummaries?.filter(
+		({ StackName }) => !foundStacksToDelete.includes(StackName ?? ''),
+	).map(({ StackName }) => StackName)
+	ignoredStacks?.forEach((name) => console.log(`Ignored: ${name}`))
+
+	stacksToDelete.resources.push(
+		...StackSummaries.filter((s) =>
+			foundStacksToDelete.includes(s.StackName ?? ''),
+		).map((s) => ({
+			StackName: s.StackName as string,
+			StackStatus: s.StackStatus as StackStatus,
+		})),
+	)
+
 	return stacksToDelete
 }
 
@@ -104,7 +115,7 @@ export const handler = async (): Promise<{
 
 	// Delete at most 10 stacks at once (again to compensate for dependencies)
 	await stacksToDelete.resources.slice(0, 10).reduce(
-		async (promise, StackName) =>
+		async (promise, { StackName, StackStatus: status }) =>
 			promise.then(async () => {
 				// Delete S3 Buckets of the stack
 				const s3buckets = await listStackResources(
@@ -124,12 +135,18 @@ export const handler = async (): Promise<{
 				await cf.send(
 					new DeleteStackCommand({
 						StackName,
-						DeletionMode: DeletionMode.FORCE_DELETE_STACK,
+						DeletionMode:
+							status === StackStatus.DELETE_FAILED
+								? DeletionMode.FORCE_DELETE_STACK
+								: DeletionMode.STANDARD,
 					}),
 				)
 			}),
 		Promise.resolve(),
 	)
 
-	return stacksToDelete
+	return {
+		pattern: stacksToDelete.pattern,
+		resources: stacksToDelete.resources.map(({ StackName }) => StackName),
+	}
 }
