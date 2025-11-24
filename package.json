@@ -39,7 +39,7 @@
     "cdk": "2.1032.0",
     "constructs": "10.4.3",
     "husky": "9.1.7",
-    "lint-staged": "16.2.6"
+    "lint-staged": "16.2.7"
   },
   "lint-staged": {
     "*.{md,json,yaml,yml}": [
