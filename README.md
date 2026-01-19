@@ -48,6 +48,7 @@ You can configure this from the command line:
 
 ```bash
 aws ssm put-parameter --name /cloudformation-cleaner/stackNameRegEx --value '^(some-pattern|another-pattern)-' --type String --overwrite
+aws ssm put-parameter --name /cloudformation-cleaner/parameterNameRegEx --value '^\/(some-pattern|another-pattern)-' --type String --overwrite
 ```
 
 ## Running from the command line
