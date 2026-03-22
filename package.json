@@ -35,7 +35,7 @@
     "@commitlint/config-conventional": "20.5.0",
     "@types/glob": "9.0.0",
     "@types/node": "24.10.0",
-    "aws-cdk-lib": "2.243.0",
+    "aws-cdk-lib": "2.244.0",
     "cdk": "2.1112.0",
     "commitlint": "20.5.0",
     "constructs": "10.5.1",
