@@ -36,7 +36,7 @@
     "@types/glob": "9.0.0",
     "@types/node": "24.10.0",
     "aws-cdk-lib": "2.257.0",
-    "cdk": "2.1125.0",
+    "cdk": "2.1126.0",
     "commitlint": "20.5.3",
     "constructs": "10.6.0",
     "husky": "9.1.7",
