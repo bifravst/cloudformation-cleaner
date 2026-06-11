@@ -13,12 +13,12 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v6
         with:
-          node-version: "22.x"
+          node-version: "24.x"
           cache: "npm"
       - name: Install dependencies and compile
         run: npm ci --no-audit
       - name: Compile
-        run: npx tsc
+        run: npx tsgo
       - name: Check source code with eslint
         run: npx eslint ./
       - name: Check if source code is properly formatted

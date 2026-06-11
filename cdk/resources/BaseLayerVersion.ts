@@ -17,7 +17,7 @@ export class BaseLayerVersion extends Construct {
 				hash: baseLayer.hash,
 			}).code,
 			compatibleArchitectures: [Lambda.Architecture.ARM_64],
-			compatibleRuntimes: [Lambda.Runtime.NODEJS_22_X],
+			compatibleRuntimes: [Lambda.Runtime.NODEJS_24_X],
 		})
 	}
 }
