@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies and compile
         run: npm ci --no-audit
       - name: Compile
-        run: npx tsgo
+        run: npx tsc
       - name: Check source code with eslint
         run: npx eslint ./
       - name: Check if source code is properly formatted
