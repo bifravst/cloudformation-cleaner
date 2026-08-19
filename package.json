@@ -37,7 +37,7 @@
     "@types/node": "25.9.3",
     "@typescript/native-preview": "7.0.0-dev.20260611.2",
     "aws-cdk-lib": "2.258.1",
-    "cdk": "2.1126.0",
+    "cdk": "2.1136.0",
     "check-node-version": "4.2.1",
     "commitlint": "21.0.2",
     "constructs": "10.6.0",
