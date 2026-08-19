@@ -40,11 +40,10 @@ const findParametersToDelete = async (
 	resources: string[]
 }> => {
 	const parameterNamePattern = await parameterNamePatternPromise
-	if (parametersToDelete === undefined)
-		parametersToDelete = {
-			pattern: parameterNamePattern,
-			resources: [],
-		}
+	parametersToDelete ??= {
+		pattern: parameterNamePattern,
+		resources: [],
+	}
 	if (parametersToDelete.resources.length >= limit) return parametersToDelete
 	const { Parameters, NextToken } = await ssm.send(
 		new GetParametersByPathCommand({

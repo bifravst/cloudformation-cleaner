@@ -43,11 +43,9 @@ const findRolesToDelete = async (
 	pattern: string
 }> => {
 	const roleNamePattern = await roleNameNamePatternPromise
-	if (rolesToDelete === undefined) {
-		rolesToDelete = {
-			pattern: roleNamePattern,
-			resources: [],
-		}
+	rolesToDelete ??= {
+		pattern: roleNamePattern,
+		resources: [],
 	}
 	if (rolesToDelete.resources.length >= limit) return rolesToDelete
 	const { Roles, Marker } = await iam.send(

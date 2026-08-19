@@ -46,11 +46,9 @@ const findStacksToDelete = async (
 	resources: { StackName: string; StackStatus: StackStatus }[]
 }> => {
 	const stackNamePattern = await stackNamePatternPromise
-	if (stacksToDelete === undefined) {
-		stacksToDelete = {
-			pattern: stackNamePattern,
-			resources: [],
-		}
+	stacksToDelete ??= {
+		pattern: stackNamePattern,
+		resources: [],
 	}
 	if (stacksToDelete.resources.length >= limit) return stacksToDelete
 	const { StackSummaries } = await cf.send(

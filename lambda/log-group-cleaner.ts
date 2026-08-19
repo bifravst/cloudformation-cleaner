@@ -41,11 +41,10 @@ const findLogGroupsToDelete = async (
 	resources: string[]
 }> => {
 	const logGroupNamePattern = await logGroupNamePatternPromise
-	if (logGroupsToDelete === undefined)
-		logGroupsToDelete = {
-			pattern: logGroupNamePattern,
-			resources: [],
-		}
+	logGroupsToDelete ??= {
+		pattern: logGroupNamePattern,
+		resources: [],
+	}
 	if (logGroupsToDelete.resources.length >= limit) return logGroupsToDelete
 	const { logGroups, nextToken } = await logs.send(
 		new DescribeLogGroupsCommand({
