@@ -36,7 +36,7 @@
     "@types/glob": "9.0.0",
     "@types/node": "26.4.1",
     "@typescript/native": "npm:typescript@7.0.2",
-    "aws-cdk-lib": "2.265.0",
+    "aws-cdk-lib": "2.268.0",
     "cdk": "2.1139.0",
     "check-node-version": "4.2.1",
     "commitlint": "21.2.2",
