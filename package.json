@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky && case \"$npm_command\" in install|ci) check-node-version --package ;; esac",
-    "clean": "node --no-warnings --experimental-transform-types ./cli.ts"
+    "clean": "node --no-warnings ./cli.ts"
   },
   "type": "module",
   "repository": {
