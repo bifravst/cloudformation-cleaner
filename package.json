@@ -76,7 +76,7 @@
   },
   "dependencies": {
     "@bifravst/cloudformation-helpers": "10.0.2",
-    "@bifravst/from-env": "4.0.0"
+    "@bifravst/from-env": "4.0.1"
   },
   "prettier": "@bifravst/prettier-config"
 }
